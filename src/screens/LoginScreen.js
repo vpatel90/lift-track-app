@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import Spacer from '../components/Spacer';
+import { Context as AuthContext } from '../context/AuthContext';
+import { NavigationEvents } from 'react-navigation';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { state, login, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
+  const [email, setEmail] = useState('vnp229@gmail.com');
+  const [password, setPassword] = useState('123456');
+
+  useEffect(() => {
+    tryLocalSignin();
+  }, []);
 
   return (
     <View style={styles.container}>
+      <NavigationEvents onWillBlur={clearErrorMessage} />
       <Spacer>
         <Text h3>Welcome!</Text>
       </Spacer>
@@ -29,13 +37,14 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
       <Spacer>
-      <Button title="Login" />
+      <Button title="Login" onPress={() => login({ email, password })} />
       </Spacer>
+      {state.errorMessage.length ? <Text style={styles.error}>{state.errorMessage}</Text> : null}
       <Spacer>
-        <Button title="Go to SignUp" onPress={() => navigation.navigate('Signup')} />
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.link}>Dont have an account? Signup here!</Text>
+        </TouchableOpacity>
       </Spacer>
-      <Spacer/>
-      <Button title="Go to Main" onPress={() => navigation.navigate('mainFlow')} />
     </View>
   );
 };
@@ -50,6 +59,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 250
+  },
+  error: {
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15
+  },
+  link: {
+    color: 'blue'
   }
 });
 
