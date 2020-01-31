@@ -5,6 +5,7 @@ import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { NavigationEvents } from 'react-navigation';
+import Colors from '../constants/Colors';
 
 const SignupScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
@@ -19,6 +20,9 @@ const SignupScreen = ({ navigation }) => {
         <Text h3>Sign Up!</Text>
       </Spacer>
       <Input
+        inputContainerStyle={{
+          borderBottomColor: Colors.primary
+        }}
         autoCapitalize="none"
         autoCorrect={false}
         label="Email"
@@ -27,6 +31,9 @@ const SignupScreen = ({ navigation }) => {
       />
       <Spacer/>
       <Input
+        inputContainerStyle={{
+          borderBottomColor: Colors.primary
+        }}
         autoCapitalize="none"
         autoCorrect={false}
         secureTextEntry
@@ -34,18 +41,13 @@ const SignupScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Spacer/>
-      <Input
-        autoCapitalize="none"
-        autoCorrect={false}
-        secureTextEntry
-        label="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-      />
       {state.errorMessage.length ? <Text style={styles.error}>{state.errorMessage}</Text> : null}
       <Spacer>
-        <Button title="Signup" onPress={() => signup({ email, password })}/>
+        <Button
+          buttonStyle={{ backgroundColor: Colors.primary }}
+          title="Signup"
+          onPress={() => signup({ email, password })}
+        />
       </Spacer>
       <Spacer>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   link: {
-    color: 'blue'
+    color: Colors.primary
   }
 });
 
