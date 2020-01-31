@@ -5,6 +5,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as LiftProvider } from './src/context/LiftContext';
 import { setNavigator } from './src/navigationRef';
 
 import AppNavigator from './src/navigation/AppNavigator';
@@ -26,7 +27,9 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AuthProvider>
-          <AppNavigator ref={(navigator) => { setNavigator(navigator) }}/>
+          <LiftProvider>
+            <AppNavigator ref={(navigator) => { setNavigator(navigator) }}/>
+          </LiftProvider>
         </AuthProvider>
         <FlashMessage position="top" />
       </View>

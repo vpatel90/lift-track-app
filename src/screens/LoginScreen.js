@@ -4,6 +4,7 @@ import { Button, Input, Text } from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { NavigationEvents } from 'react-navigation';
+import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => {
   const { state, login, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
@@ -21,6 +22,9 @@ const LoginScreen = ({ navigation }) => {
         <Text h3>Welcome!</Text>
       </Spacer>
       <Input
+        inputContainerStyle={{
+          borderBottomColor: Colors.primary
+        }}
         autoCapitalize="none"
         autoCorrect={false}
         label="Email"
@@ -29,6 +33,9 @@ const LoginScreen = ({ navigation }) => {
       />
       <Spacer/>
       <Input
+        inputContainerStyle={{
+          borderBottomColor: Colors.primary
+        }}
         autoCapitalize="none"
         autoCorrect={false}
         secureTextEntry
@@ -37,7 +44,10 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
       <Spacer>
-      <Button title="Login" onPress={() => login({ email, password })} />
+      <Button
+        buttonStyle={{ backgroundColor: Colors.primary }}
+        title="Login"
+        onPress={() => login({ email, password })} />
       </Spacer>
       {state.errorMessage.length ? <Text style={styles.error}>{state.errorMessage}</Text> : null}
       <Spacer>
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   link: {
-    color: 'blue'
+    color: Colors.primary
   }
 });
 

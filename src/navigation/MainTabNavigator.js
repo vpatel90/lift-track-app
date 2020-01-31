@@ -8,7 +8,8 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CounterScreen from '../screens/CounterScreen';
-import { createSwitchNavigator } from 'react-navigation';
+import Colors from '../constants/Colors';
+import NewLiftScreen from '../screens/NewLiftScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -18,7 +19,8 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Counter: CounterScreen
+    Counter: CounterScreen,
+    NewLift: NewLiftScreen
   },
   config
 );
@@ -30,11 +32,12 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-home`
+          : 'md-home'
       }
     />
   ),
+  headerBackTitleStyle: { color: Colors.primary }
 };
 
 HomeStack.path = '';
@@ -47,9 +50,9 @@ const LinksStack = createStackNavigator(
 );
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Charts',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-stats' : 'md-stats'} />
   ),
 };
 
@@ -75,6 +78,13 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+}, {
+  tabBarOptions: {
+    activeTintColor: Colors.primary,
+    style: {
+      backgroundColor: Colors.secondary
+    }
+  }
 });
 
 tabNavigator.path = '';

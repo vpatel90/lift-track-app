@@ -1,7 +1,9 @@
 import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import { AsyncStorage } from 'react-native';
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { navigate } from '../navigationRef';
+import Colors from '../constants/Colors';
 
 const authReducer = (state, action) => {
   switch (action.type){
@@ -23,6 +25,7 @@ const tryLocalSignin = dispatch => async () => {
   if (token) {
     dispatch({ type: 'add_token', payload: token });
     navigate('mainFlow');
+    showMessage({ message: 'Logged In Automatically', backgroundColor: Colors.primary });
   }
 };
 
@@ -36,6 +39,7 @@ const signup = dispatch => async ({ email, password }) => {
     await AsyncStorage.setItem('token', response.headers.authorization);
     dispatch({ type: 'add_token', payload: response.headers.authorization });
     navigate('mainFlow');
+    showMessage({ message: 'Account Created!', type: 'success' });
   } catch (err) {
     dispatch({ type: 'add_error', payload: 'Something went wrong' });
   }
@@ -46,9 +50,9 @@ const login = dispatch => async ({ email, password }) => {
   try {
     const response = await trackerApi.post('/users/sign_in', { user: { email, password }});
     await AsyncStorage.setItem('token', response.headers.authorization);
-    dispatch({ type: 'add_token', payload: response.headers.authorization });
-    console.log(response.headers.authorization)
+    dispatch({ type: 'add_token', payload: response.headers.authorization + 'av' });
     navigate('mainFlow');
+    showMessage({ message: 'Logged In!', backgroundColor: Colors.primary });
   } catch (err) {
     dispatch({ type: 'add_error', payload: 'Something went wrong' });
   }
@@ -60,6 +64,7 @@ const logout = dispatch => async () => {
     await AsyncStorage.removeItem('token');
     dispatch({ type: 'remove_token' });
     navigate('loginFlow');
+    showMessage({ message: 'Logged Out', backgroundColor: Colors.primary});
   } catch (err) {
     dispatch({ type: 'add_error', payload: 'Something went wrong' });
   }
