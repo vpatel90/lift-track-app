@@ -3,9 +3,12 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import Colors from '../constants/Colors';
 
-const LiftCard = ({ lift }) => {
+const LiftCard = ({ lift, navigation }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('NewLiftInstance', { lift_id: lift.id, lift_name: lift.name })}
+      style={styles.container}
+    >
       <Text style={styles.title}>{lift.name}</Text>
     </TouchableOpacity>
   );

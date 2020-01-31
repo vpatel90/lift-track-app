@@ -48,7 +48,7 @@ export default function HomeScreen({ navigation }) {
         data={lifts}
         renderItem={({item}) => {
           return (
-            <LiftCard lift={item} />
+            <LiftCard lift={item} navigation={navigation} />
           );
         }}
       />

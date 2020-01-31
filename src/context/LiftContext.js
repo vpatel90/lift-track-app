@@ -1,7 +1,8 @@
 import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { navigate } from '../navigationRef'
+import { navigate } from '../navigationRef';
+import Colors from '../constants/Colors';
 
 const liftReducer = (state, action) => {
   switch (action.type){
@@ -45,8 +46,19 @@ const createLift = dispatch => async ({ name }) => {
   }
 }
 
+const createLiftInstance = dispatch => async ({ lift_id, date, reps, weight }) => {
+  try {
+    const response = await trackerApi.post(`/api/v1/lifts/${lift_id}/lift_instances`, { lift_instance: { date, reps, weight }});
+    console.log(response.data);
+    showMessage({ message: 'Great Job!', backgroundColor: Colors.primary });
+    // dispatch({ type: 'add_lift_instance', payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const { Provider, Context } = createDataContext(
   liftReducer,
-  { getLifts, getTags, createLift },
+  { getLifts, getTags, createLift, createLiftInstance },
   { lifts: [], tags: [] }
 );

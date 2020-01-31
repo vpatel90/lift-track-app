@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import CounterScreen from '../screens/CounterScreen';
 import Colors from '../constants/Colors';
 import NewLiftScreen from '../screens/NewLiftScreen';
+import NewLiftInstanceScreen from '../screens/NewLiftInstanceScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -20,7 +21,8 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Counter: CounterScreen,
-    NewLift: NewLiftScreen
+    NewLift: NewLiftScreen,
+    NewLiftInstance: NewLiftInstanceScreen
   },
   config
 );
