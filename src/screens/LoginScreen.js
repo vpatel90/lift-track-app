@@ -8,8 +8,8 @@ import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => {
   const { state, login, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('vnp229@gmail.com');
+  const [password, setPassword] = useState('123456');
 
   useEffect(() => {
     tryLocalSignin();

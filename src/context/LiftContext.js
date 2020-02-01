@@ -46,19 +46,8 @@ const createLift = dispatch => async ({ name }) => {
   }
 }
 
-const createLiftInstance = dispatch => async ({ lift_id, date, reps, weight }) => {
-  try {
-    const response = await trackerApi.post(`/api/v1/lifts/${lift_id}/lift_instances`, { lift_instance: { date, reps, weight }});
-    console.log(response.data);
-    showMessage({ message: 'Great Job!', backgroundColor: Colors.primary });
-    // dispatch({ type: 'add_lift_instance', payload: response.data });
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 export const { Provider, Context } = createDataContext(
   liftReducer,
-  { getLifts, getTags, createLift, createLiftInstance },
+  { getLifts, getTags, createLift },
   { lifts: [], tags: [] }
 );

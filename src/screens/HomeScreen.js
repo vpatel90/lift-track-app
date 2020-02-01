@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Text, TouchableHighlight } from 'react-native';
+import { Text as ElementsText } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
 import LiftCard from '../components/LiftCard';
-import { Text } from 'react-native-elements';
 import Spacer from '../components/Spacer';
+import Tag from '../components/Tag';
 import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 
@@ -11,11 +12,11 @@ export default function HomeScreen({ navigation }) {
 
   const { state, getLifts, getTags } = useContext(LiftContext);
   const [lifts, setLifts] = useState(state.lift);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [showFilters, setShowFilters] = useState(true);
+  const [tags, setTags] = useState({});
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
-    // getTags();
+    getTags();
     getLifts();
   }, []);
 
@@ -23,26 +24,28 @@ export default function HomeScreen({ navigation }) {
     setLifts(state.lifts);
   }, [state.lifts.length]);
 
+  useEffect(() => {
+    setTags(state.tags);
+  }, [state.tags.length]);
+
+  function updateSelectedTag(pressedTag) {
+    const newTags = tags.map((tag) => {
+      if (tag.name === pressedTag.name) {
+        return { ...tag, selected: !tag.selected };
+      }
+      return tag;
+    })
+    setTags(newTags);
+  };
+
+  function resetFilters() {
+    setTags(state.tags);
+  }
+
   return (
     <View style={styles.container}>
-      <Text h4>Start your workout!</Text>
-
-      {/* <Overlay
-        isVisible={showFilters}
-        onBackdropPress={()=>setShowFilters(false)}
-      >
-        <FlatList
-          contentContainerStyle={styles.flexIt}
-          keyExtractor={item => item.name}
-          data={state.tags}
-          renderItem={({item}) => {
-            return (
-              <Text style={styles.pill}>{item.name}</Text>
-            );
-          }}
-        />
-      </Overlay> */}
-
+      <ElementsText h4 onPress={() => setShowFilters(true)}>Start your workout!</ElementsText>
+      {filtersOverlay()}
       <FlatList
         keyExtractor={item => `lift-${item.id}`}
         data={lifts}
@@ -60,6 +63,41 @@ export default function HomeScreen({ navigation }) {
       />
     </View>
   );
+
+  // Nested Components
+
+  function filtersOverlay() {
+    return (
+      <Overlay
+        isVisible={showFilters}
+        fullScreen
+        onBackdropPress={()=>setShowFilters(false)}>
+        <>
+        <FlatList
+          contentContainerStyle={styles.flexIt}
+          keyExtractor={item => item.name}
+          numColumns={2}
+          data={tags}
+          renderItem={({item}) => {
+            return <Tag tag={item} update={(tag) => updateSelectedTag(tag)} />;
+          }}
+        />
+        <Button
+          buttonStyle={styles.floatingButtonSecondary}
+          title="Reset"
+          type="outline"
+          titleStyle={{ color: Colors.primary }}
+          onPress={() => resetFilters()}
+        />
+        <Button
+          buttonStyle={{...styles.floatingButton, marginBottom: 30}}
+          title="Close"
+          onPress={() => setShowFilters(false)}
+        />
+        </>
+      </Overlay>
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
@@ -79,23 +117,19 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
   flexIt: {
-    flex: 1,
-    padding: 8,
-    flexDirection: 'row', // main axis
-    flexWrap: "wrap"
+    padding: 15,
+    paddingTop: 100
+  },
+  selectedPill: {
+    borderColor: "#fff",
+    backgroundColor: Colors.primary,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    margin: 5,
+    width: 170,
   },
   pill: {
     color: Colors.primary,
@@ -104,11 +138,17 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 15,
-    margin: 5
+    margin: 5,
+    width: 170,
+    textAlign: "center"
   },
   floatingButton: {
     backgroundColor: Colors.primary,
     marginBottom: 10
+  },
+  floatingButtonSecondary: {
+    marginBottom: 10,
+    borderColor: Colors.primary
   }
 
 });

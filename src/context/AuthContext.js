@@ -25,7 +25,6 @@ const tryLocalSignin = dispatch => async () => {
   if (token) {
     dispatch({ type: 'add_token', payload: token });
     navigate('mainFlow');
-    showMessage({ message: 'Logged In Automatically', backgroundColor: Colors.primary });
   }
 };
 

@@ -1,14 +1,17 @@
-import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { Button, Input, Text } from 'react-native-elements'
+import { Button, Card, Input, Text } from 'react-native-elements'
 import Colors from '../constants/Colors';
-import { Context as LiftContext } from '../context/LiftContext';
+import { Context as LiftInstanceContext } from '../context/LiftInstanceContext';
 import Spacer from '../components/Spacer';
 import moment from 'moment';
+import { groupBy, sortBy, reverse } from 'lodash';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
-  const { state, createLiftInstance } = useContext(LiftContext);
+  const { state, createLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
+  const [liftInstances, setLiftInstances] = useState([]);
+  const [dates, setDates] = useState([]);
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
   const lift_id = navigation.getParam('lift_id');
@@ -17,6 +20,17 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   const inputReps = React.createRef();
   const inputWeight = React.createRef();
+
+  useEffect(() => {
+    getLiftInstances({ lift_id, lift_name });
+  }, [])
+
+  useEffect(() => {
+    const lis = state[lift_name];
+    const groupedByDates = groupBy(lis, (l) => l.date);
+    setDates(reverse(sortBy(Object.keys(groupedByDates), (d) => moment(new Date(d)))));
+    setLiftInstances(groupedByDates);
+  }, [state[lift_name] && state[lift_name].length]);
 
   const submit = () => {
     createLiftInstance({ lift_id, date, reps, weight });
@@ -28,12 +42,13 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text h4>Today's {lift_name}</Text>
+      <Text h4 style={{marginBottom: 10}}>Today's {lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
           ref={inputReps}
           inputContainerStyle={{
-            borderBottomColor: Colors.primary
+            borderBottomColor: Colors.primary,
+            height: 40
           }}
           containerStyle= {{
             flex: 1
@@ -48,7 +63,8 @@ const NewLiftInstanceScreen = ({ navigation }) => {
         <Input
           ref={inputWeight}
           inputContainerStyle={{
-            borderBottomColor: Colors.primary
+            borderBottomColor: Colors.primary,
+            height: 40
           }}
           containerStyle= {{
             flex: 1
@@ -63,12 +79,34 @@ const NewLiftInstanceScreen = ({ navigation }) => {
         <Button
           buttonStyle={{ backgroundColor: Colors.primary }}
           containerStyle= {{
-            marginTop: 20,
-            flex: 1
+            flex: 1,
+            height: 50
           }}
-          title="Save"
+          title="Save Set"
           onPress={submit} />
       </View>
+
+      <FlatList
+        style={{marginTop: 80}}
+        keyExtractor={item => `liftInstance-${item}`}
+        data={dates}
+        renderItem={({item}) => {
+          return (
+            <>
+            <Text>{item}</Text>
+            <FlatList
+              keyExtractor={item => `liftInstance-${item.id}`}
+              data={liftInstances[item]}
+              renderItem={({item}) => {
+                return (
+                  <Text>Reps: {item.reps}</Text>
+                );
+              }}
+              />
+            </>
+          );
+        }}
+      />
     </View>
   );
 };
@@ -81,7 +119,6 @@ NewLiftInstanceScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 35,
     paddingLeft: 10,
     paddingRight: 10,
