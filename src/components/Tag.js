@@ -35,6 +35,7 @@ export default function Tag({ tag, update }) {
 };
 
 
+
 const styles = StyleSheet.create({
   selectedPill: {
     borderColor: "#fff",

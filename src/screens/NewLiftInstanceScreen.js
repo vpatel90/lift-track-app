@@ -11,7 +11,6 @@ import { groupBy, sortBy, reverse } from 'lodash';
 const NewLiftInstanceScreen = ({ navigation }) => {
   const { state, createLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
   const [liftInstances, setLiftInstances] = useState([]);
-  const [dates, setDates] = useState([]);
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
   const lift_id = navigation.getParam('lift_id');
@@ -26,14 +25,11 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
-    const lis = state[lift_name];
-    const groupedByDates = groupBy(lis, (l) => l.date);
-    setDates(reverse(sortBy(Object.keys(groupedByDates), (d) => moment(new Date(d)))));
-    setLiftInstances(groupedByDates);
-  }, [state[lift_name] && state[lift_name].length]);
+    setLiftInstances(state[lift_name]);
+  }, [state[lift_name]]);
 
   const submit = () => {
-    createLiftInstance({ lift_id, date, reps, weight });
+    createLiftInstance({ lift_id, lift_name, date, reps, weight });
     setReps('');
     setWeight('');
     inputReps.current.blur();
@@ -42,10 +38,11 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text h4 style={{marginBottom: 10}}>Today's {lift_name}</Text>
+      <Text h4>Today's {lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
           ref={inputReps}
+          labelStyle={{ height: 20 }}
           inputContainerStyle={{
             borderBottomColor: Colors.primary,
             height: 40
@@ -62,6 +59,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
         />
         <Input
           ref={inputWeight}
+          labelStyle={{ height: 20 }}
           inputContainerStyle={{
             borderBottomColor: Colors.primary,
             height: 40
@@ -80,7 +78,8 @@ const NewLiftInstanceScreen = ({ navigation }) => {
           buttonStyle={{ backgroundColor: Colors.primary }}
           containerStyle= {{
             flex: 1,
-            height: 50
+            height: 50,
+            marginTop: 20
           }}
           title="Save Set"
           onPress={submit} />
@@ -88,18 +87,18 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
       <FlatList
         style={{marginTop: 80}}
-        keyExtractor={item => `liftInstance-${item}`}
-        data={dates}
+        keyExtractor={item => `liftInstance-${item.date}`}
+        data={liftInstances}
         renderItem={({item}) => {
           return (
             <>
-            <Text>{item}</Text>
+            <Text>{item.date}</Text>
             <FlatList
               keyExtractor={item => `liftInstance-${item.id}`}
-              data={liftInstances[item]}
+              data={item.value}
               renderItem={({item}) => {
                 return (
-                  <Text>Reps: {item.reps}</Text>
+                  <Text>Reps: {item.reps} Weight: {item.weight}</Text>
                 );
               }}
               />
