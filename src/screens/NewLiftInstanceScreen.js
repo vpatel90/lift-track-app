@@ -9,7 +9,7 @@ import moment from 'moment';
 import { groupBy, sortBy, reverse } from 'lodash';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
-  const { state, createLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
+  const { state, createLiftInstance, cloneLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
   const [liftInstances, setLiftInstances] = useState([]);
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
@@ -35,6 +35,10 @@ const NewLiftInstanceScreen = ({ navigation }) => {
     inputReps.current.blur();
     inputWeight.current.blur();
   };
+
+  const clone = (item) => {
+    createLiftInstance({ lift_id, lift_name, date, reps: item.reps, weight: item.weight });
+  }
 
   return (
     <View style={styles.container}>
@@ -98,7 +102,18 @@ const NewLiftInstanceScreen = ({ navigation }) => {
               data={item.value}
               renderItem={({item}) => {
                 return (
-                  <Text>Reps: {item.reps} Weight: {item.weight}</Text>
+                  <>
+                    <Text>Reps: {item.reps} Weight: {item.weight}</Text>
+                    <Button
+                      buttonStyle={{ backgroundColor: Colors.primary }}
+                      containerStyle={{
+                        flex: 1,
+                        height: 50,
+                        marginTop: 20
+                      }}
+                      title="Clone"
+                      onPress={() => clone(item)} />
+                  </>
                 );
               }}
               />
