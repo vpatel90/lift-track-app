@@ -46,7 +46,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text h4>Today's {lift_name}</Text>
+      <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
           ref={inputReps}
