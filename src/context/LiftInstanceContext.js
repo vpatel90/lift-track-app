@@ -16,7 +16,7 @@ const liftInstanceReducer = (state, action) => {
       const lift = state[action.payload.lift_name];
 
       // Check if there is already an item for todays sets
-      const todaysSets = lift.find(lv => lv.date === action.payload.date);
+      let todaysSets = lift.find(lv => lv.date === action.payload.date);
       let newLiftValue;
 
       if (todaysSets) {
