@@ -9,7 +9,7 @@ import moment from 'moment';
 import { groupBy, sortBy, reverse } from 'lodash';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
-  const { state, createLiftInstance, cloneLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
+  const { state, createLiftInstance, destroyLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
   const [liftInstances, setLiftInstances] = useState([]);
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
@@ -38,6 +38,10 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   const clone = (item) => {
     createLiftInstance({ lift_id, lift_name, date, reps: item.reps, weight: item.weight });
+  }
+
+  const destroy = (item) => {
+    destroyLiftInstance({ lift_id, lift_name, date, lift_instance_id: item.id });
   }
 
   return (
@@ -96,27 +100,36 @@ const NewLiftInstanceScreen = ({ navigation }) => {
         renderItem={({item}) => {
           return (
             <>
-            <Text>{item.date}</Text>
-            <FlatList
-              keyExtractor={item => `liftInstance-${item.id}`}
-              data={item.value}
-              renderItem={({item}) => {
-                return (
-                  <>
-                    <Text>Reps: {item.reps} Weight: {item.weight}</Text>
-                    <Button
-                      buttonStyle={{ backgroundColor: Colors.primary }}
-                      containerStyle={{
-                        flex: 1,
-                        height: 50,
-                        marginTop: 20
-                      }}
-                      title="Clone"
-                      onPress={() => clone(item)} />
-                  </>
-                );
-              }}
-              />
+              <Text style={{fontSize: 28, marginBottom: 12}}>{item.date}</Text>
+              <FlatList
+                keyExtractor={item => `liftInstance-${item.id}`}
+                data={item.value}
+                renderItem={({item}) => {
+                  return (
+                    <View style={styles.liftInstanceContainer}>
+                      <Text style={{width: "50%", fontSize: 18}}>Reps: {item.reps}, Weight: {item.weight}</Text>
+                      <Button
+                        buttonStyle={{ backgroundColor: Colors.primary, width: "90%" }}
+                        containerStyle={{
+                          flex: 1,
+                          height: 50,
+                          padding: 0
+                        }}
+                        title="Clone"
+                        onPress={() => clone(item)} />
+                      <Button
+                        buttonStyle={{ backgroundColor: Colors.primary, width: "90%" }}
+                        containerStyle={{
+                          flex: 1,
+                          height: 50,
+                          padding: 0
+                        }}
+                        title="Trash"
+                        onPress={() => destroy(item)} />
+                    </View>
+                  );
+                }}
+                />
             </>
           );
         }}
@@ -141,6 +154,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
     flexDirection: "row"
+  },
+  liftInstanceContainer: { 
+    flex: 1, 
+    flexDirection: "row", 
+    justifyContent: 'space-between', 
+    alignItems: "center", 
+    width: "100%"
   }
 });
 
