@@ -107,7 +107,15 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                 renderItem={({item}) => {
                   return (
                     <View style={styles.liftInstanceContainer}>
-                      <Text style={{width: "50%", fontSize: 18}}>Reps: {item.reps}, Weight: {item.weight}</Text>
+                      <View style={{flex: 3, flexDirection: "row", justifyContent: "space-evenly"}}>
+                        <Text style={{fontSize: 18}}>
+                          {item.reps}
+                        </Text>
+                        <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type="ionicon"/>
+                        <Text style={{fontSize: 18, width: 90}}>
+                          {item.weight} {item.weight && item.weight.length ? 'lbs' : ''}
+                        </Text>
+                      </View>
                       <Button
                         buttonStyle={{ backgroundColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
                         containerStyle={{
@@ -121,7 +129,9 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                         }
                         onPress={() => clone(item)} />
                       <Button
-                        buttonStyle={{ backgroundColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
+                        type="outline"
+                        titleStyle={{ color: Colors.primary }}
+                        buttonStyle={{ borderColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
                         containerStyle={{
                           flex: 1,
                           height: 50,
@@ -129,7 +139,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                         }}
                         title=""
                         icon={
-                          <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
+                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
                         }
                         onPress={() => destroy(item)} />
                     </View>

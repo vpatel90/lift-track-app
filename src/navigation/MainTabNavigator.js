@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
+import SummaryScreen from '../screens/SummaryScreen'
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CounterScreen from '../screens/CounterScreen';
@@ -44,6 +45,22 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
+const SummaryStack = createStackNavigator(
+  {
+    Summary: SummaryScreen,
+  },
+  config
+);
+
+SummaryStack.navigationOptions = {
+  tabBarLabel: 'Summaries',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'} />
+  ),
+};
+
+SummaryStack.path = '';
+
 const LinksStack = createStackNavigator(
   {
     Links: LinksScreen,
@@ -78,6 +95,7 @@ SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  SummaryStack,
   LinksStack,
   SettingsStack,
 }, {
