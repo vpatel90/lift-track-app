@@ -113,7 +113,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                         </Text>
                         <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type="ionicon"/>
                         <Text style={{fontSize: 18, width: 90}}>
-                          {item.weight} {item.weight && item.weight.length ? 'lbs' : ''}
+                          {item.weight} {item.weight ? 'lbs' : ''}
                         </Text>
                       </View>
                       <Button
