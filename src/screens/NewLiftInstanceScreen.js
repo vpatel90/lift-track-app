@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { Platform, View, StyleSheet, FlatList } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { Button, Card, Input, Text } from 'react-native-elements'
+import { Button, Card, Input, Text, Icon } from 'react-native-elements'
 import Colors from '../constants/Colors';
 import { Context as LiftInstanceContext } from '../context/LiftInstanceContext';
 import Spacer from '../components/Spacer';
@@ -46,7 +46,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text h4>Today's {lift_name}</Text>
+      <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
           ref={inputReps}
@@ -94,13 +94,13 @@ const NewLiftInstanceScreen = ({ navigation }) => {
       </View>
 
       <FlatList
-        style={{marginTop: 80}}
+        style={{marginTop: 80, marginBottom: 30}}
         keyExtractor={item => `liftInstance-${item.date}`}
         data={liftInstances}
         renderItem={({item}) => {
           return (
-            <>
-              <Text style={{fontSize: 28, marginBottom: 12}}>{item.date}</Text>
+            <View style={{marginBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.secondaryLight }}>
+              <Text style={{fontSize: 24, marginBottom: 12}}>{item.date === date ? "Today's Sets" : item.date}</Text>
               <FlatList
                 keyExtractor={item => `liftInstance-${item.id}`}
                 data={item.value}
@@ -109,28 +109,34 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                     <View style={styles.liftInstanceContainer}>
                       <Text style={{width: "50%", fontSize: 18}}>Reps: {item.reps}, Weight: {item.weight}</Text>
                       <Button
-                        buttonStyle={{ backgroundColor: Colors.primary, width: "90%" }}
+                        buttonStyle={{ backgroundColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
                         containerStyle={{
                           flex: 1,
                           height: 50,
                           padding: 0
                         }}
-                        title="Clone"
+                        title=""
+                        icon={
+                          <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type="ionicon"/>
+                        }
                         onPress={() => clone(item)} />
                       <Button
-                        buttonStyle={{ backgroundColor: Colors.primary, width: "90%" }}
+                        buttonStyle={{ backgroundColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
                         containerStyle={{
                           flex: 1,
                           height: 50,
                           padding: 0
                         }}
-                        title="Trash"
+                        title=""
+                        icon={
+                          <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
+                        }
                         onPress={() => destroy(item)} />
                     </View>
                   );
                 }}
                 />
-            </>
+            </View>
           );
         }}
       />
@@ -155,11 +161,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: "row"
   },
-  liftInstanceContainer: { 
-    flex: 1, 
-    flexDirection: "row", 
-    justifyContent: 'space-between', 
-    alignItems: "center", 
+  liftInstanceContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
     width: "100%"
   }
 });
