@@ -4,8 +4,11 @@ import { navigate } from '../navigationRef';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Colors from '../constants/Colors';
 
+const API_URL = 'https://secret-lowlands-64580.herokuapp.com';
+// const API_URL = 'https://0432c64e.ngrok.io'
+
 const axiosInstance = axios.create({
-  baseURL: 'https://0432c64e.ngrok.io',
+  baseURL: API_URL,
   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 });
 
