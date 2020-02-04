@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Button, Input, Text } from 'react-native-elements';
+import { Button, Input, Text, CheckBox } from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { NavigationEvents } from 'react-navigation';
@@ -8,8 +8,8 @@ import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => {
   const { state, login, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
-  const [email, setEmail] = useState('vnp229@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     tryLocalSignin();
