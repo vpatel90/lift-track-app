@@ -10,12 +10,35 @@ const liftReducer = (state, action) => {
       return { ...state, lifts: action.payload }
     case 'get_tags':
       return { ...state, tags: action.payload }
+    case 'get_lift_dates':
+      return { ...state, liftDates: action.payload }
+    case 'get_daily_summary':
+      return { ...state, dailySummary: action.payload }
     case 'add_lift':
       return { ...state, lifts: [...state.lifts, action.payload] }
     default:
       return state;
   }
 };
+
+const getLiftDates = dispatch => async () => {
+  try {
+    const response = await trackerApi.get(`/api/v1/lift_dates`);
+    dispatch({ type: 'get_lift_dates', payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const getDailySummary = dispatch => async({date}) => {
+  try {
+    const response = await trackerApi.get(`/api/v1/lift_dates/${date}`);
+    console.log(response.data);
+    dispatch({ type: 'get_daily_summary', payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 const getTags = dispatch => async () => {
   try {
@@ -48,6 +71,6 @@ const createLift = dispatch => async ({ name }) => {
 
 export const { Provider, Context } = createDataContext(
   liftReducer,
-  { getLifts, getTags, createLift },
-  { lifts: [], tags: [] }
+  { getLifts, getTags, getLiftDates, getDailySummary, createLift },
+  { lifts: [], tags: [], liftDates: [], dailySummary: [] }
 );
