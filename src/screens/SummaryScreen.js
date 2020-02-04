@@ -12,7 +12,7 @@ const SummaryScreen = () => {
   const { state, getLiftDates, getDailySummary } = useContext(LiftContext);
   const date = moment(new Date()).format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState('');
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(true);
   const [liftDates, setLiftDates] = useState({});
   const [dailySummary, setDailySummary] = useState([]);
 
@@ -49,7 +49,7 @@ const SummaryScreen = () => {
   function renderCalendar() {
     if (showCalendar) {
       return (
-        <CalendarList
+        <Calendar
           // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
           maxDate={new Date()}
 
@@ -60,11 +60,6 @@ const SummaryScreen = () => {
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={'MMMM yyyy'}
           // Handler which gets executed when visible month changes in calendar. Default = undefined
-
-          horizontal={true}
-          scrollEnabled={true}
-          pagingEnabled={true}
-          futureScrollRange={0}
           renderArrow={(direction) => {
             if (direction === 'left') {
               return <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-arrow-back` : 'md-arrow-back'} type="ionicon"/>;
@@ -101,7 +96,6 @@ const SummaryScreen = () => {
           <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-calendar` : 'md-calendar'} type="ionicon"/>
         </TouchableOpacity>
         {renderSummaryList()}
-
       </View>
     )
   }
@@ -124,11 +118,11 @@ const SummaryScreen = () => {
                       <View style={styles.liftInstanceContainer}>
                         <View style={{flex: 3, flexDirection: "row", justifyContent: "space-evenly"}}>
                           <Text style={{fontSize: 18}}>
-                            {item.reps}
+                            {item.reps.toString().padStart(2, ' ')}
                           </Text>
                           <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type="ionicon"/>
                           <Text style={{fontSize: 18, width: 90}}>
-                            {item.weight} {item.weight ? 'lbs' : ''}
+                            {item.weight ? item.weight.toString().padStart(6, ' ') : ''.padStart(6, ' ')} {item.weight ? 'lbs' : ''}
                           </Text>
                         </View>
                       </View>

@@ -109,11 +109,11 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                     <View style={styles.liftInstanceContainer}>
                       <View style={{flex: 3, flexDirection: "row", justifyContent: "space-evenly"}}>
                         <Text style={{fontSize: 18}}>
-                          {item.reps}
+                          {item.reps.toString().padStart(2, ' ')}
                         </Text>
                         <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type="ionicon"/>
                         <Text style={{fontSize: 18, width: 90}}>
-                          {item.weight} {item.weight ? 'lbs' : ''}
+                          {item.weight ? item.weight.toString().padStart(6, ' ') : ''.padStart(6, ' ')} {item.weight ? 'lbs' : ''}
                         </Text>
                       </View>
                       <Button
