@@ -33,7 +33,6 @@ const getLiftDates = dispatch => async () => {
 const getDailySummary = dispatch => async({date}) => {
   try {
     const response = await trackerApi.get(`/api/v1/lift_dates/${date}`);
-    console.log(response.data);
     dispatch({ type: 'get_daily_summary', payload: response.data });
   } catch (err) {
     console.log(err);
