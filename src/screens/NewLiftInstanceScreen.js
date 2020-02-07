@@ -152,20 +152,6 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                           <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type="ionicon"/>
                         }
                         onPress={() => clone(item)} />
-                      {/* <Button
-                        type="outline"
-                        titleStyle={{ color: Colors.primary }}
-                        buttonStyle={{ borderColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
-                        containerStyle={{
-                          flex: 1,
-                          height: 50,
-                          padding: 0
-                        }}
-                        title=""
-                        icon={
-                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
-                        }
-                        onPress={() => destroy(item)} /> */}
                     </View>
                   );
                 }}
