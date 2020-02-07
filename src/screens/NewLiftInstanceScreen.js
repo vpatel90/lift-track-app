@@ -7,6 +7,7 @@ import { Context as LiftInstanceContext } from '../context/LiftInstanceContext';
 import Spacer from '../components/Spacer';
 import moment from 'moment';
 import { groupBy, sortBy, reverse } from 'lodash';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
   const { state, createLiftInstance, destroyLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
@@ -101,9 +102,32 @@ const NewLiftInstanceScreen = ({ navigation }) => {
           return (
             <View style={{marginBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.secondaryLight }}>
               <Text style={{fontSize: 24, marginBottom: 12}}>{item.date === date ? "Today's Sets" : item.date}</Text>
-              <FlatList
+              <SwipeListView
                 keyExtractor={item => `liftInstance-${item.id}`}
                 data={item.value}
+                renderHiddenItem={({item}) => {
+                  return (
+                    <View style={{ alignItems: "flex-start"}}>
+                      <Button
+                        type="outline"
+                        titleStyle={{ color: Colors.primary }}
+                        buttonStyle={{ borderColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
+                        containerStyle={{
+                          height: 50,
+                          padding: 0,
+                          marginLeft: -10,
+                          width: 75
+                        }}
+                        title=""
+                        icon={
+                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
+                        }
+                        onPress={() => destroy(item)} />
+                    </View>
+                  )
+                }}
+                leftOpenValue={75}
+                swipeToOpenPercent={10}
                 renderItem={({item}) => {
                   return (
                     <View style={styles.liftInstanceContainer}>
@@ -128,20 +152,6 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                           <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type="ionicon"/>
                         }
                         onPress={() => clone(item)} />
-                      <Button
-                        type="outline"
-                        titleStyle={{ color: Colors.primary }}
-                        buttonStyle={{ borderColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
-                        containerStyle={{
-                          flex: 1,
-                          height: 50,
-                          padding: 0
-                        }}
-                        title=""
-                        icon={
-                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
-                        }
-                        onPress={() => destroy(item)} />
                     </View>
                   );
                 }}
@@ -176,7 +186,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: "center",
-    width: "100%"
+    width: "100%",
+    backgroundColor: "#fff"
   }
 });
 
