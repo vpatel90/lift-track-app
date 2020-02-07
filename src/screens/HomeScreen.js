@@ -83,18 +83,9 @@ export default function HomeScreen({ navigation }) {
     return (
       <Overlay
         isVisible={showFilters}
-        fullScreen
+
         onBackdropPress={()=>setShowFilters(false)}>
         <>
-        {/* <FlatList
-          contentContainerStyle={styles.flexIt}
-          keyExtractor={item => item.name}
-          numColumns={2}
-          data={tags}
-          renderItem={({item}) => {
-            return <Tag tag={item} update={(tag) => updateSelectedTag(tag)} />;
-          }}
-        /> */}
         <ScrollView contentContainerStyle={styles.flexIt}>
         {
           tags.map((tag, i) => {
@@ -110,7 +101,7 @@ export default function HomeScreen({ navigation }) {
           onPress={() => resetFilters()}
         />
         <Button
-          buttonStyle={{...styles.floatingButton, marginBottom: 30}}
+          buttonStyle={{...styles.floatingButton }}
           title="Apply"
           onPress={() => setShowFilters(false)}
         />
@@ -140,8 +131,8 @@ const styles = StyleSheet.create({
   flexIt: {
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingTop: 100,
-    alignItems: "center"
+    paddingVertical: 50,
+    justifyContent: "flex-start"
   },
   floatingButton: {
     backgroundColor: Colors.primary,
