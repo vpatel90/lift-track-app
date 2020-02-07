@@ -103,7 +103,7 @@ export default function HomeScreen({ navigation }) {
         />
         <Button
           buttonStyle={{...styles.floatingButton, marginBottom: 30}}
-          title="Close"
+          title="Apply"
           onPress={() => setShowFilters(false)}
         />
         </>
