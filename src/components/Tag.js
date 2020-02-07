@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, FlatList, Text, TouchableHighlight, Dimensions } from 'react-native';
 import { Text as ElementsText } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
 import LiftCard from '../components/LiftCard';
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
     margin: 5,
-    width: 170,
+    width: (Dimensions.get('window').width / 2) - 30
+
   },
   pill: {
     color: Colors.primary,
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
     margin: 5,
-    width: 170,
-    textAlign: "center"
+    textAlign: "center",
+    width: (Dimensions.get('window').width / 2) - 30
   },
 });

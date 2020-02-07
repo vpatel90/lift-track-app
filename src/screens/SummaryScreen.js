@@ -12,7 +12,7 @@ const SummaryScreen = () => {
   const { state, getLiftDates, getDailySummary } = useContext(LiftContext);
   const date = moment(new Date()).format('YYYY-MM-DD');
   const [selectedDate, setSelectedDate] = useState('');
-  const [showCalendar, setShowCalendar] = useState(true);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [liftDates, setLiftDates] = useState({});
   const [dailySummary, setDailySummary] = useState([]);
 
