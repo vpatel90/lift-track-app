@@ -1,19 +1,23 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableHighlight } from 'react-native';
-import { Text as ElementsText } from 'react-native-elements';
+import { StyleSheet, View, FlatList, TouchableHighlight } from 'react-native';
+import { Text } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
 import LiftCard from '../components/LiftCard';
 import Spacer from '../components/Spacer';
 import Tag from '../components/Tag';
 import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
+import { intersection } from 'lodash';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen({ navigation }) {
 
   const { state, getLifts, getTags } = useContext(LiftContext);
   const [lifts, setLifts] = useState(state.lift);
-  const [tags, setTags] = useState({});
+  const [tags, setTags] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+
+  const selectedTags =  tags.filter(t => t.selected);
 
   useEffect(() => {
     getTags();
@@ -40,18 +44,27 @@ export default function HomeScreen({ navigation }) {
 
   function resetFilters() {
     setTags(state.tags);
+    setShowFilters(false);
   }
 
   return (
     <View style={styles.container}>
-      <ElementsText h4 onPress={() => setShowFilters(true)}>Start your workout!</ElementsText>
+      <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
+        <Text h4 style={{height: 40}}>Start your workout!</Text>
+        <Button
+          buttonStyle={{height: 40, paddingHorizontal: 20, backgroundColor: Colors.primary}}
+          title={`Filters${selectedTags.length ? `(${selectedTags.length})` : ''}`}
+          onPress={() => setShowFilters(true)}
+        />
+      </View>
       {filtersOverlay()}
       <FlatList
         keyExtractor={item => `lift-${item.id}`}
+        contentContainerStyle={{justifyContent: "space-evenly"}}
         data={lifts}
         renderItem={({item}) => {
           return (
-            <LiftCard lift={item} navigation={navigation} />
+            <LiftCard lift={item} selectedTags={selectedTags} navigation={navigation} />
           );
         }}
       />
@@ -70,18 +83,16 @@ export default function HomeScreen({ navigation }) {
     return (
       <Overlay
         isVisible={showFilters}
-        fullScreen
+
         onBackdropPress={()=>setShowFilters(false)}>
         <>
-        <FlatList
-          contentContainerStyle={styles.flexIt}
-          keyExtractor={item => item.name}
-          numColumns={2}
-          data={tags}
-          renderItem={({item}) => {
-            return <Tag tag={item} update={(tag) => updateSelectedTag(tag)} />;
-          }}
-        />
+        <ScrollView contentContainerStyle={styles.flexIt}>
+        {
+          tags.map((tag, i) => {
+            return <Tag key={tag.name} tag={tag} update={(tag) => updateSelectedTag(tag)} />;
+          })
+        }
+        </ScrollView>
         <Button
           buttonStyle={styles.floatingButtonSecondary}
           title="Reset"
@@ -90,11 +101,11 @@ export default function HomeScreen({ navigation }) {
           onPress={() => resetFilters()}
         />
         <Button
-          buttonStyle={{...styles.floatingButton, marginBottom: 30}}
-          title="Close"
+          buttonStyle={{...styles.floatingButton }}
+          title="Apply"
           onPress={() => setShowFilters(false)}
         />
-        </>
+      </>
       </Overlay>
     );
   }
@@ -112,35 +123,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 35
+    paddingTop: 10
   },
   contentContainer: {
     paddingTop: 30,
   },
   flexIt: {
-    padding: 15,
-    paddingTop: 100
-  },
-  selectedPill: {
-    borderColor: "#fff",
-    backgroundColor: Colors.primary,
-    borderWidth: 1,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    margin: 5,
-    width: 170,
-  },
-  pill: {
-    color: Colors.primary,
-    borderColor: Colors.primary,
-    borderWidth: 1,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    margin: 5,
-    width: 170,
-    textAlign: "center"
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingVertical: 50,
+    justifyContent: "flex-start"
   },
   floatingButton: {
     backgroundColor: Colors.primary,
