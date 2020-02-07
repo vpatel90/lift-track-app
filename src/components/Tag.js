@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
     margin: 5,
-    width: (Dimensions.get('window').width / 2) - 30
+    maxWidth: (Dimensions.get('window').width / 2) - 30
 
   },
   pill: {
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     margin: 5,
     textAlign: "center",
-    width: (Dimensions.get('window').width / 2) - 30
+    maxWidth: (Dimensions.get('window').width / 2) - 30
   },
 });

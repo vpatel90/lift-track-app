@@ -8,6 +8,7 @@ import Tag from '../components/Tag';
 import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { intersection } from 'lodash';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen({ navigation }) {
 
@@ -85,7 +86,7 @@ export default function HomeScreen({ navigation }) {
         fullScreen
         onBackdropPress={()=>setShowFilters(false)}>
         <>
-        <FlatList
+        {/* <FlatList
           contentContainerStyle={styles.flexIt}
           keyExtractor={item => item.name}
           numColumns={2}
@@ -93,7 +94,14 @@ export default function HomeScreen({ navigation }) {
           renderItem={({item}) => {
             return <Tag tag={item} update={(tag) => updateSelectedTag(tag)} />;
           }}
-        />
+        /> */}
+        <ScrollView contentContainerStyle={styles.flexIt}>
+        {
+          tags.map((tag, i) => {
+            return <Tag key={tag.name} tag={tag} update={(tag) => updateSelectedTag(tag)} />;
+          })
+        }
+        </ScrollView>
         <Button
           buttonStyle={styles.floatingButtonSecondary}
           title="Reset"
@@ -106,7 +114,7 @@ export default function HomeScreen({ navigation }) {
           title="Apply"
           onPress={() => setShowFilters(false)}
         />
-        </>
+      </>
       </Overlay>
     );
   }
@@ -130,7 +138,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   flexIt: {
-    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
     paddingTop: 100,
     alignItems: "center"
   },
