@@ -44,21 +44,23 @@ const liftInstanceReducer = (state, action) => {
       // Get existing lift instances array
       const lift = state[action.payload.lift_name];
 
-      // Check if there is already an item for todays sets
-      const todaysSets = lift.find(lv => lv.date === action.payload.date);
+      // Grab the sets from the day of the lift instances
+      const daySets = lift.find(lv => lv.date === action.payload.date);
       let newLiftValue;
 
-      if (todaysSets) {
+      if (daySets) {
         // Remove the Set from the existing sets for the day
-        const newTodaysSets = todaysSets.value.filter(instance => instance.id !== Number(action.payload.instance.lift_instance_id))
+        const newDaySets = daySets.value.filter(instance => instance.id !== Number(action.payload.instance.lift_instance_id))
 
-        // Filter out todays set, and add it with its new value (with the removed set)
-        newLiftValue = [
-          { ...todaysSets, value: newTodaysSets },
-          ...lift.filter((lv) => lv.date !== action.payload.date)
-        ];
+        // Without changing the order of days, we want to replace the value of the day where a set was deleted
+        newLiftValue = lift.map(lv => {
+          if (lv.date === action.payload.date) {
+            return { date: action.payload.date, value: newDaySets };
+          }
+          return lv;
+        })
       } else {
-        // If there are no todaysSets, then there should be no DELETE functionality
+        // If there are no sets found, there will be nothing to DELETE
         return state;
       }
       return {
@@ -74,7 +76,6 @@ const liftInstanceReducer = (state, action) => {
 const getLiftInstances = dispatch => async ({ lift_id, lift_name }) => {
   try {
     const response = await trackerApi.get(`/api/v1/lifts/${lift_id}/lift_instances`);
-    console.log(response.data);
     dispatch({ type: 'get_lift_instances', payload: { lift_name, instances: response.data }});
   } catch (err) {
     console.log(err);
@@ -84,7 +85,6 @@ const getLiftInstances = dispatch => async ({ lift_id, lift_name }) => {
 const createLiftInstance = dispatch => async ({ lift_id, lift_name, date, reps, weight }) => {
   try {
     const response = await trackerApi.post(`/api/v1/lifts/${lift_id}/lift_instances`, { lift_instance: { date, reps, weight }});
-    console.log(response.data);
     showMessage({ message: 'Great Job!', backgroundColor: Colors.primary });
     dispatch({ type: 'add_lift_instance', payload: { lift_name, instance: response.data, date: response.data.date }});
   } catch (err) {
@@ -95,8 +95,7 @@ const createLiftInstance = dispatch => async ({ lift_id, lift_name, date, reps, 
 const destroyLiftInstance = dispatch => async ({ lift_id, lift_name, date, lift_instance_id }) => {
   try {
     const response = await trackerApi.delete(`/api/v1/lifts/${lift_id}/lift_instances/${lift_instance_id}`);
-    console.log(response.data);
-    showMessage({ message: 'Lift Destroyed!', backgroundColor: Colors.primary });
+    showMessage({ message: 'Lift Removed!', backgroundColor: Colors.primary });
     dispatch({ type: 'destroy_lift_instance', payload: { lift_name, instance: response.data, date: date }});
   } catch (err) {
     showMessage({ message: 'Unable to Destroy this Lift!', backgroundColor: Colors.primary });

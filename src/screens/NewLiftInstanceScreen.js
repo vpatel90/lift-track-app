@@ -42,7 +42,8 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }
 
   const destroy = (item) => {
-    destroyLiftInstance({ lift_id, lift_name, date, lift_instance_id: item.id });
+    console.log(item);
+    destroyLiftInstance({ lift_id, lift_name, date: item.date, lift_instance_id: item.id });
   }
 
   return (
