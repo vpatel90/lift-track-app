@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
   const [tags, setTags] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
 
-  const selectedTags =  tags.filter(t => t.selected);
+  const selectedTags = tags.filter(t => t.selected);
 
   useEffect(() => {
     getTags();
@@ -88,8 +88,12 @@ export default function HomeScreen({ navigation }) {
         <>
         <ScrollView contentContainerStyle={styles.flexIt}>
         {
-          tags.map((tag, i) => {
-            return <Tag key={tag.name} tag={tag} update={(tag) => updateSelectedTag(tag)} />;
+          tags.map((tag) => {
+            return <Tag 
+                key={tag.name}
+                tag={tag}
+                selected={tag.selected}
+                update={(tag) => updateSelectedTag(tag)} />
           })
         }
         </ScrollView>
