@@ -2,6 +2,7 @@ import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import { showMessage } from "react-native-flash-message";
 import { navigate } from '../navigationRef';
+import { uniq } from 'lodash';
 
 const liftReducer = (state, action) => {
   switch (action.type){
