@@ -5,6 +5,7 @@ import Colors from '../constants/Colors';
 import { Context as LiftContext } from '../context/LiftContext';
 import Spacer from '../components/Spacer';
 import Tag from '../components/Tag';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const NewLiftScreen = () => {
   const { state, createLift, getTags } = useContext(LiftContext);
@@ -22,13 +23,14 @@ const NewLiftScreen = () => {
     setTagsToSave([...tagsToSave, tag])
     setTagInput('')
   }
-  
+
   const removeTag = (selectedTag) => {
     setTagsToSave(tagsToSave.filter(listedTag => listedTag != selectedTag))
   }
 
   return (
     <View style={styles.container}>
+      <ScrollView>
      <Input
         inputContainerStyle={{ borderBottomColor: Colors.primary }}
         placeholder="Bench Press"
@@ -41,9 +43,9 @@ const NewLiftScreen = () => {
       <View style={styles.tagsContainer}>
         {
           tagsToSave.map((tag, i) => {
-            return <Tag 
-              key={i} 
-              tag={{ name: tag }} 
+            return <Tag
+              key={i}
+              tag={{ name: tag }}
               selected={true}
               update={() => removeTag(tag)}
             />
@@ -96,17 +98,18 @@ const NewLiftScreen = () => {
           title=""
           onPress={() => addTag(tagInput)}
           icon={
-            <Icon 
+            <Icon
               color="#fff"
-              name={Platform.OS === 'ios' ? `ios-checkmark` : 'md-checkmark'} 
-              type="ionicon" 
+              name={Platform.OS === 'ios' ? `ios-checkmark` : 'md-checkmark'}
+              type="ionicon"
             />
-          } 
+          }
         />
       </View>
+      </ScrollView>
       <Spacer/>
       <Button
-        buttonStyle={{ backgroundColor: Colors.primary }}
+        buttonStyle={{ backgroundColor: Colors.primary, marginBottom: 10 }}
         title="Save"
         onPress={() => createLift({ name, tags: tagsToSave })} />
     </View>
@@ -122,18 +125,19 @@ NewLiftScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 35,
+    paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
   },
   tagsContainer: {
-    flex: 0, 
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     marginBottom: 24
   },
   tagText: {
-    fontSize: 16, 
+    fontSize: 16,
     marginTop: 8
   },
   tagInput: {
