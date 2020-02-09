@@ -5,7 +5,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Colors from '../constants/Colors';
 
 // const API_URL = 'https://secret-lowlands-64580.herokuapp.com';
-const API_URL = 'https://0432c64e.ngrok.io'
+const API_URL = 'https://5505b8a6.ngrok.io'
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
