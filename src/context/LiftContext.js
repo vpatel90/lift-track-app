@@ -16,8 +16,8 @@ const liftReducer = (state, action) => {
     case 'add_lift':
       return { 
         ...state, 
-        lifts: [...state.lifts, action.payload.lift],
-        tags:  [...state.tags, ...action.payload.tags] 
+        lifts: [...state.lifts, action.payload],
+        tags: uniq([...state.tags, ...action.payload.tags])
       }
     default:
       return state;
@@ -64,6 +64,8 @@ const createLift = dispatch => async ({ name, tags }) => {
   try {
     const response = await trackerApi.post('/api/v1/lifts', { lift: { name }, tags: { tags: tags.join(',') }});
     showMessage({ message: 'Exercise Created', type: 'success' });
+    console.log(response.data);
+    
     dispatch({ type: 'add_lift', payload: response.data });
     navigate('Home')
   } catch (err) {

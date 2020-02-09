@@ -14,10 +14,6 @@ const NewLiftScreen = () => {
   const [userTags, setUserTags] = useState([]);
 
   useEffect(() => {
-    getTags();
-  }, []);
-
-  useEffect(() => {
     setUserTags(state.tags);
   }, [state.tags.length]);
 
@@ -69,7 +65,7 @@ const NewLiftScreen = () => {
         {
           userTags.map((tag, i) => {
             return <Tag
-              key={i}
+              key={`tag-index-${i}`}
               tag={{ name: tag.name }}
               update={() => addTag(tag.name)}
             />
@@ -85,7 +81,7 @@ const NewLiftScreen = () => {
           containerStyle={styles.tagInput}
           placeholder="Chest"
           autoCapitalize="none"
-          autoCorrect={false}
+          autoCorrect={true}
           label="Tag"
           value={tagInput}
           onChangeText={setTagInput}
