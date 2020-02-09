@@ -2,7 +2,7 @@ import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import { showMessage } from "react-native-flash-message";
 import { navigate } from '../navigationRef';
-import { uniq } from 'lodash';
+import { uniqBy } from 'lodash';
 
 const liftReducer = (state, action) => {
   switch (action.type){
@@ -15,10 +15,13 @@ const liftReducer = (state, action) => {
     case 'get_daily_summary':
       return { ...state, dailySummary: action.payload }
     case 'add_lift':
+      console.log('state', state.tags);
+      console.log('action', action.payload.tags);
+      console.log('uniq', uniqBy([...state.tags, ...action.payload.tags], "name"));
       return { 
         ...state, 
         lifts: [...state.lifts, action.payload],
-        tags: uniq([...state.tags, ...action.payload.tags])
+        tags: uniqBy([...state.tags, ...action.payload.tags], "name")
       }
     default:
       return state;
