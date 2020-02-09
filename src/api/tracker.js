@@ -5,7 +5,6 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Colors from '../constants/Colors';
 import config from '../../env';
 
-console.log(process.env.NODE_ENV);
 const axiosInstance = axios.create({
   baseURL: config.API_URL,
   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
