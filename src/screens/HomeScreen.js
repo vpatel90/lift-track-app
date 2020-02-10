@@ -1,14 +1,12 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, FlatList, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
 import LiftCard from '../components/LiftCard';
-import Spacer from '../components/Spacer';
 import Tag from '../components/Tag';
 import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
-import { intersection } from 'lodash';
-import { ScrollView } from 'react-native-gesture-handler';
+import globalStyles from '../styles/global';
 
 export default function HomeScreen({ navigation }) {
 
@@ -32,7 +30,7 @@ export default function HomeScreen({ navigation }) {
     setTags(state.tags);
   }, [state.tags.length]);
 
-  function updateSelectedTag(pressedTag) {
+  const updateSelectedTag = (pressedTag) => {
     const newTags = tags.map((tag) => {
       if (tag.name === pressedTag.name) {
         return { ...tag, selected: !tag.selected };
@@ -42,13 +40,13 @@ export default function HomeScreen({ navigation }) {
     setTags(newTags);
   };
 
-  function resetFilters() {
+  const resetFilters = () => {
     setTags(state.tags);
     setShowFilters(false);
   }
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
         <Text h4 style={{height: 40}}>Start your workout!</Text>
         <Button
@@ -89,7 +87,7 @@ export default function HomeScreen({ navigation }) {
         <ScrollView contentContainerStyle={styles.flexIt}>
         {
           tags.map((tag) => {
-            return <Tag 
+            return <Tag
                 key={tag.name}
                 tag={tag}
                 selected={tag.selected}

@@ -23,12 +23,22 @@ axiosInstance.interceptors.response.use((response) => {
   return response;
 }, async (error) => {
   if (error.response.status === 401) {
+    console.log(error.request.responseURL);
     await AsyncStorage.removeItem('token');
-    showMessage({ message: 'Session Expired!', backgroundColor: Colors.primary })
+    showMessage({ message: errorMessage(error.request.responseURL), backgroundColor: Colors.primary })
     return navigate('loginFlow');
   } else {
     return Promise.reject(error);
   }
-})
+});
+
+const errorMessage = (responseURL) => {
+  if (responseURL.match(/users\/sign_in/)) {
+    return 'Invalid Email or Password';
+  }
+  return 'Session Expired!';
+}
+
+
 
 export default axiosInstance;

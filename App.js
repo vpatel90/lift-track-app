@@ -1,8 +1,8 @@
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import React, { useState, useContext, useEffect } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Platform, StatusBar, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as LiftProvider } from './src/context/LiftContext';
@@ -25,7 +25,7 @@ export default function App(props) {
     );
   } else {
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1 }}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AuthProvider>
           <LiftProvider>
@@ -65,10 +65,3 @@ function handleLoadingError(error) {
 function handleFinishLoading(setLoadingComplete) {
   setLoadingComplete(true);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
