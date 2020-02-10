@@ -20,7 +20,7 @@ const NewLiftScreen = () => {
   }, [state.tags.length]);
 
   const addTag = (tag) => {
-    if (tagsToSave.includes(tag) || tag.trim() === "") return setTagInput('')
+    if (tagsToSave.includes(tag) || tag.trim() === '') return setTagInput('')
     setTagsToSave([...tagsToSave, tag])
     setTagInput('')
   }
@@ -34,8 +34,8 @@ const NewLiftScreen = () => {
       <ScrollView>
         <Input
           inputContainerStyle={{ borderBottomColor: Colors.primary }}
-          placeholder="Bench Press"
-          label="Name"
+          placeholder='Bench Press'
+          label='Name'
           value={name}
           onChangeText={setName}
         />
@@ -56,7 +56,7 @@ const NewLiftScreen = () => {
             Tag your exercise!
           </Text>
           <Tooltip width={300} height={150} backgroundColor={Colors.secondary} popover={toolTipText()}>
-            <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-help-circle-outline` : 'md-help-circle-outline'} type="ionicon"/>
+            <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-help-circle-outline` : 'md-help-circle-outline'} type='ionicon'/>
           </Tooltip>
         </View>
         <View style={styles.tagsContainer}>
@@ -72,29 +72,29 @@ const NewLiftScreen = () => {
         </View>
         <View style={{
           flex: 1,
-          flexDirection: "row"
+          flexDirection: 'row'
         }}>
           <Input
             inputContainerStyle={{ borderBottomColor: Colors.primary, height: 40 }}
             labelStyle={{ height: 20 }}
             containerStyle={styles.tagInput}
-            placeholder="Chest"
-            autoCapitalize="none"
+            placeholder='Chest'
+            autoCapitalize='none'
             autoCorrect={true}
-            label="New Tag"
+            label='New Tag'
             value={tagInput}
             onChangeText={setTagInput}
           />
           <Button
-            type="outline"
+            type='outline'
             buttonStyle={styles.tagSubmit}
             containerStyle={styles.tagSubmitContainer}
             onPress={() => addTag(tagInput)}
             icon={
               <Icon
-                color="#fff"
+                color='#fff'
                 name={Platform.OS === 'ios' ? `ios-checkmark` : 'md-checkmark'}
-                type="ionicon"
+                type='ionicon'
               />
             }
           />
@@ -103,7 +103,7 @@ const NewLiftScreen = () => {
       <Spacer/>
       <Button
         buttonStyle={{ backgroundColor: Colors.primary, marginBottom: 10 }}
-        title="Save"
+        title='Save'
         onPress={() => createLift({ name, tags: tagsToSave })} />
     </View>
   );
@@ -112,11 +112,12 @@ const NewLiftScreen = () => {
 const toolTipText = () => {
   return (
     <Text style={globalStyles.toolTipText}>
-      Tags can be any thing that might help you filter for this exercise later. i.e "chest", "leg".
+      Tags can be any thing that might help you filter for this exercise later. i.e 'chest', 'leg'.
       You can add an existing tag, or you may create a new one.
     </Text>
   );
 }
+
 NewLiftScreen.navigationOptions = {
   title: 'Add New Exercise',
   headerBackTitleStyle: { color: Colors.primary },
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   },
   tagSubmit: {
     backgroundColor: Colors.primary,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
     width: (Dimensions.get('window').width * .25) - 30
   },
   tagSubmitContainer: {

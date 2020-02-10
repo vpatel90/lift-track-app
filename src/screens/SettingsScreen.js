@@ -14,7 +14,7 @@ export default function SettingsScreen() {
   const list = [
     {
       title: 'Logout',
-      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type="ionicon"/>,
+      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type='ionicon'/>,
       onPress: () => logout()
     }
   ]

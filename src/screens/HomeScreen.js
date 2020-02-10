@@ -45,39 +45,7 @@ export default function HomeScreen({ navigation }) {
     setShowFilters(false);
   }
 
-  return (
-    <View style={globalStyles.container}>
-      <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
-        <Text h4 style={{height: 40}}>Start your workout!</Text>
-        <Button
-          buttonStyle={{height: 40, paddingHorizontal: 20, backgroundColor: Colors.primary}}
-          title={`Filters${selectedTags.length ? `(${selectedTags.length})` : ''}`}
-          onPress={() => setShowFilters(true)}
-        />
-      </View>
-      {filtersOverlay()}
-      <FlatList
-        keyExtractor={item => `lift-${item.id}`}
-        contentContainerStyle={{justifyContent: "space-evenly"}}
-        data={lifts}
-        renderItem={({item}) => {
-          return (
-            <LiftCard lift={item} selectedTags={selectedTags} navigation={navigation} />
-          );
-        }}
-      />
-
-      <Button
-        buttonStyle={styles.floatingButton}
-        title="Add New Exercise"
-        onPress={() => navigation.navigate('NewLift')}
-      />
-    </View>
-  );
-
-  // Nested Components
-
-  function filtersOverlay() {
+  const filtersOverlay = () => {
     return (
       <Overlay
         isVisible={showFilters}
@@ -97,20 +65,51 @@ export default function HomeScreen({ navigation }) {
         </ScrollView>
         <Button
           buttonStyle={styles.floatingButtonSecondary}
-          title="Reset"
-          type="outline"
+          title='Reset'
+          type='outline'
           titleStyle={{ color: Colors.primary }}
           onPress={() => resetFilters()}
         />
         <Button
           buttonStyle={{...styles.floatingButton }}
-          title="Apply"
+          title='Apply'
           onPress={() => setShowFilters(false)}
         />
       </>
       </Overlay>
     );
   }
+
+  return (
+    <View style={globalStyles.container}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+        <Text h4 style={{height: 40}}>Start your workout!</Text>
+        <Button
+          buttonStyle={{height: 40, paddingHorizontal: 20, backgroundColor: Colors.primary}}
+          title={`Filters${selectedTags.length ? `(${selectedTags.length})` : ''}`}
+          onPress={() => setShowFilters(true)}
+        />
+      </View>
+      {filtersOverlay()}
+      <FlatList
+        keyExtractor={item => `lift-${item.id}`}
+        contentContainerStyle={{justifyContent: 'space-evenly'}}
+        data={lifts}
+        renderItem={({item}) => {
+          return (
+            <LiftCard lift={item} selectedTags={selectedTags} navigation={navigation} />
+          );
+        }}
+      />
+
+      <Button
+        buttonStyle={styles.floatingButton}
+        title='Add New Exercise'
+        onPress={() => navigation.navigate('NewLift')}
+      />
+    </View>
+  );
+
 }
 
 HomeScreen.navigationOptions = {
@@ -124,10 +123,10 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   flexIt: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     paddingVertical: 50,
-    justifyContent: "flex-start"
+    justifyContent: 'flex-start'
   },
   floatingButton: {
     backgroundColor: Colors.primary,
