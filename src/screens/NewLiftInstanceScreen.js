@@ -44,7 +44,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{...globalStyles.container, flex: 0}}>
+    <View style={globalStyles.container}>
       <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         <Input

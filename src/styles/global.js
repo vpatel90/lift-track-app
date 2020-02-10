@@ -4,7 +4,7 @@ import Colors from '../constants/Colors';
 // Try to keep this Alphabetical
 export default globalStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     backgroundColor: '#fff',
     paddingLeft: 10,
     paddingRight: 10,
