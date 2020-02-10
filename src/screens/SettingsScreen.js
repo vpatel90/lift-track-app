@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Spacer from '../components/Spacer';
-import { Platform, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Platform, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Text, ListItem, Icon } from 'react-native-elements';
 import { Context as AuthContext } from '../context/AuthContext';
 import Colors from '../constants/Colors';
@@ -14,25 +14,35 @@ export default function SettingsScreen() {
   const list = [
     {
       title: 'Logout',
-      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type="ionicon"/>
+      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type="ionicon"/>,
+      onPress: () => logout()
     }
   ]
-  keyExtractor = (item, index) => index.toString();
 
   renderItem = ({ item }) => (
     <ListItem
       title={item.title}
       leftIcon={item.leftIcon}
-      onPress={logout}
+      onPress={item.onPress}
       bottomDivider
     />
   )
   return (
-    <FlatList
-      keyExtractor={this.keyExtractor}
-      data={list}
-      renderItem={this.renderItem}
-    />
+    <View style={{flex: 1}}>
+      <FlatList
+        keyExtractor={(item, index) => `settings-${index}`}
+        data={list}
+        renderItem={({ item }) => (
+          <ListItem
+            title={item.title}
+            leftIcon={item.leftIcon}
+            onPress={item.onPress}
+            bottomDivider
+          />
+        )}
+      />
+      <Text style={{textAlign: 'right', padding: 15}}>{process.env.NODE_ENV.toUpperCase()}</Text>
+    </View>
   )
 }
 

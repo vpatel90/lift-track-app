@@ -3,12 +3,10 @@ import { AsyncStorage } from 'react-native';
 import { navigate } from '../navigationRef';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Colors from '../constants/Colors';
-
-// const API_URL = 'https://secret-lowlands-64580.herokuapp.com';
-const API_URL = 'https://5505b8a6.ngrok.io'
+import config from '../../env';
 
 const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: config.API_URL,
   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 });
 

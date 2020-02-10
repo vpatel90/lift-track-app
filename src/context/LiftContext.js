@@ -15,11 +15,8 @@ const liftReducer = (state, action) => {
     case 'get_daily_summary':
       return { ...state, dailySummary: action.payload }
     case 'add_lift':
-      console.log('state', state.tags);
-      console.log('action', action.payload.tags);
-      console.log('uniq', uniqBy([...state.tags, ...action.payload.tags], "name"));
-      return { 
-        ...state, 
+      return {
+        ...state,
         lifts: [...state.lifts, action.payload],
         tags: uniqBy([...state.tags, ...action.payload.tags], "name")
       }
@@ -68,8 +65,6 @@ const createLift = dispatch => async ({ name, tags }) => {
   try {
     const response = await trackerApi.post('/api/v1/lifts', { lift: { name }, tags: { tags: tags.join(',') }});
     showMessage({ message: 'Exercise Created', type: 'success' });
-    console.log(response.data);
-    
     dispatch({ type: 'add_lift', payload: response.data });
     navigate('Home')
   } catch (err) {
