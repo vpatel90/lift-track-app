@@ -17,5 +17,9 @@ export default globalStyles = StyleSheet.create({
   },
   link: {
     color: Colors.primary
-  }
+  },
+  toolTipText: {
+    fontSize: 18,
+    color: '#fff'
+  },
 });

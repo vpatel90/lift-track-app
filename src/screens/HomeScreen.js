@@ -120,13 +120,6 @@ HomeScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10
-  },
   contentContainer: {
     paddingTop: 30,
   },
