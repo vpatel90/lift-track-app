@@ -30,7 +30,7 @@ const NewLiftScreen = () => {
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{ ...globalStyles.container, flex: 1 }}>
       <ScrollView>
         <Input
           inputContainerStyle={{ borderBottomColor: Colors.primary }}

@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{ ...globalStyles.container, flex: 1 }}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
         <Text h4 style={{height: 40}}>Start your workout!</Text>
         <Button
