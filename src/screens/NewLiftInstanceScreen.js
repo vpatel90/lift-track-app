@@ -44,7 +44,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{...globalStyles.container, flex: 0}}>
       <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
@@ -94,6 +94,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
       <FlatList
         style={{marginTop: 80, marginBottom: 30}}
+        contentContainerStyle={{justifyContent: 'flex-start'}}
         keyExtractor={item => `liftInstance-${item.date}`}
         data={liftInstances}
         renderItem={({item}) => {
