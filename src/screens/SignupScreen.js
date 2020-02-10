@@ -19,7 +19,7 @@ const SignupScreen = ({ navigation }) => {
       <AuthForm title='Signup' onPress={(email, password) => signup({ email, password })} />
       <Spacer>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={globalStyles.link}>Already have an account? Login here!</Text>
+          <Text style={globalStyles.colorPrimary}>Already have an account? Login here!</Text>
         </TouchableOpacity>
       </Spacer>
     </View>

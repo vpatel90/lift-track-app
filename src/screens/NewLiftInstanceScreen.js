@@ -108,7 +108,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                     <View style={{ alignItems: 'flex-start'}}>
                       <Button
                         type='outline'
-                        titleStyle={{ color: Colors.primary }}
+                        titleStyle={globalStyles.colorPrimary}
                         buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
                         containerStyle={{
                           height: 50,
@@ -164,7 +164,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
 NewLiftInstanceScreen.navigationOptions = {
   title: 'Add New Set',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 }
 

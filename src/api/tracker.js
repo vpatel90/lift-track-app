@@ -23,7 +23,6 @@ axiosInstance.interceptors.response.use((response) => {
   return response;
 }, async (error) => {
   if (error.response.status === 401) {
-    console.log(error.request.responseURL);
     await AsyncStorage.removeItem('token');
     showMessage({ message: errorMessage(error.request.responseURL), backgroundColor: Colors.primary })
     return navigate('loginFlow');

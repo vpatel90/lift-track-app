@@ -67,7 +67,7 @@ export default function HomeScreen({ navigation }) {
           buttonStyle={styles.floatingButtonSecondary}
           title='Reset'
           type='outline'
-          titleStyle={{ color: Colors.primary }}
+          titleStyle={globalStyles.colorPrimary}
           onPress={() => resetFilters()}
         />
         <Button
@@ -114,7 +114,7 @@ export default function HomeScreen({ navigation }) {
 
 HomeScreen.navigationOptions = {
   title: 'Exercises',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 };
 

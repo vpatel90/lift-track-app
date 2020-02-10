@@ -120,7 +120,7 @@ const toolTipText = () => {
 
 NewLiftScreen.navigationOptions = {
   title: 'Add New Exercise',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 }
 

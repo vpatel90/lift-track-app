@@ -148,7 +148,7 @@ const SummaryScreen = () => {
 
 SummaryScreen.navigationOptions = {
   title: 'Daily Summary',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 };
 

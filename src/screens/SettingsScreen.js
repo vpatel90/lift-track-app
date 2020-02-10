@@ -48,6 +48,6 @@ export default function SettingsScreen() {
 
 SettingsScreen.navigationOptions = {
   title: 'Settings',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 };

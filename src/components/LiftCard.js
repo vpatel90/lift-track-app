@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { intersection } from 'lodash';

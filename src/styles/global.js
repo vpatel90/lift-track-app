@@ -10,13 +10,13 @@ export default globalStyles = StyleSheet.create({
     paddingRight: 10,
     paddingTop: 10
   },
+  colorPrimary: {
+    color: Colors.primary
+  },
   pseudoCenterContainer: {
     flex: 1,
     justifyContent: 'center',
     marginBottom: 250
-  },
-  link: {
-    color: Colors.primary
   },
   toolTipText: {
     fontSize: 18,
