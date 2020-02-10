@@ -14,7 +14,7 @@ export default function SettingsScreen() {
   const list = [
     {
       title: 'Logout',
-      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type="ionicon"/>,
+      leftIcon: <Icon name={Platform.OS === 'ios' ? `ios-power` : 'md-power'} type='ionicon'/>,
       onPress: () => logout()
     }
   ]
@@ -48,6 +48,6 @@ export default function SettingsScreen() {
 
 SettingsScreen.navigationOptions = {
   title: 'Settings',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 };

@@ -1,13 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Platform, View, StyleSheet, FlatList } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
-import { Button, Card, Input, Text, Icon } from 'react-native-elements'
+import { Button, Input, Text, Icon } from 'react-native-elements'
 import Colors from '../constants/Colors';
 import { Context as LiftInstanceContext } from '../context/LiftInstanceContext';
-import Spacer from '../components/Spacer';
 import moment from 'moment';
-import { groupBy, sortBy, reverse } from 'lodash';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import globalStyles from '../styles/global';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
   const { state, createLiftInstance, destroyLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
@@ -16,7 +14,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   const [weight, setWeight] = useState('');
   const lift_id = navigation.getParam('lift_id');
   const lift_name = navigation.getParam('lift_name');
-  const date = moment().format("MMM D, YYYY");
+  const date = moment().format('MMM D, YYYY');
 
   const inputReps = React.createRef();
   const inputWeight = React.createRef();
@@ -46,7 +44,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         <Input
@@ -59,10 +57,10 @@ const NewLiftInstanceScreen = ({ navigation }) => {
           containerStyle= {{
             flex: 1
           }}
-          keyboardType="numeric"
-          autoCapitalize="none"
+          keyboardType='numeric'
+          autoCapitalize='none'
           autoCorrect={false}
-          label="Reps"
+          label='Reps'
           value={reps}
           onChangeText={setReps}
         />
@@ -76,10 +74,10 @@ const NewLiftInstanceScreen = ({ navigation }) => {
           containerStyle= {{
             flex: 1
           }}
-          keyboardType="numeric"
-          autoCapitalize="none"
+          keyboardType='numeric'
+          autoCapitalize='none'
           autoCorrect={false}
-          label="Weight"
+          label='Weight'
           value={weight}
           onChangeText={setWeight}
         />
@@ -90,37 +88,38 @@ const NewLiftInstanceScreen = ({ navigation }) => {
             height: 50,
             marginTop: 20
           }}
-          title="Save Set"
+          title='Save Set'
           onPress={submit} />
       </View>
 
       <FlatList
         style={{marginTop: 80, marginBottom: 30}}
+        contentContainerStyle={{justifyContent: 'flex-start'}}
         keyExtractor={item => `liftInstance-${item.date}`}
         data={liftInstances}
         renderItem={({item}) => {
           return (
             <View style={{marginBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.secondaryLight }}>
-              <Text style={{fontSize: 24, marginBottom: 12}}>{item.date === date ? "Today's Sets" : item.date}</Text>
+              <Text style={{fontSize: 24, marginBottom: 12}}>{item.date === date ? 'Today\'s Sets' : item.date}</Text>
               <SwipeListView
                 keyExtractor={item => `liftInstance-${item.id}`}
                 data={item.value}
                 renderHiddenItem={({item}) => {
                   return (
-                    <View style={{ alignItems: "flex-start"}}>
+                    <View style={{ alignItems: 'flex-start'}}>
                       <Button
-                        type="outline"
-                        titleStyle={{ color: Colors.primary }}
-                        buttonStyle={{ borderColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
+                        type='outline'
+                        titleStyle={globalStyles.colorPrimary}
+                        buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
                         containerStyle={{
                           height: 50,
                           padding: 0,
                           marginLeft: -10,
                           width: 75
                         }}
-                        title=""
+                        title=''
                         icon={
-                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type="ionicon"/>
+                          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type='ionicon'/>
                         }
                         onPress={() => destroy(item)} />
                     </View>
@@ -131,25 +130,25 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                 renderItem={({item}) => {
                   return (
                     <View style={styles.liftInstanceContainer}>
-                      <View style={{flex: 3, flexDirection: "row", justifyContent: "space-evenly"}}>
+                      <View style={{flex: 3, flexDirection: 'row', justifyContent: 'space-evenly'}}>
                         <Text style={{fontSize: 18}}>
                           {item.reps.toString().padStart(2, ' ')}
                         </Text>
-                        <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type="ionicon"/>
+                        <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type='ionicon'/>
                         <Text style={{fontSize: 18, width: 90}}>
                           {item.weight ? item.weight.toString().padStart(6, ' ') : ''.padStart(6, ' ')} {item.weight ? 'lbs' : ''}
                         </Text>
                       </View>
                       <Button
-                        buttonStyle={{ backgroundColor: Colors.primary, width: "80%", alignSelf: "flex-end" }}
+                        buttonStyle={{ backgroundColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
                         containerStyle={{
                           flex: 1,
                           height: 50,
                           padding: 0
                         }}
-                        title=""
+                        title=''
                         icon={
-                          <Icon color="#fff" name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type="ionicon"/>
+                          <Icon color='#fff' name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type='ionicon'/>
                         }
                         onPress={() => clone(item)} />
                     </View>
@@ -166,28 +165,23 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
 NewLiftInstanceScreen.navigationOptions = {
   title: 'Add New Set',
-  headerBackTitleStyle: { color: Colors.primary },
+  headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 35,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
   formContainer: {
     flex: 1,
     marginTop: 10,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   liftInstanceContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#fff"
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#fff'
   }
 });
 

@@ -40,6 +40,7 @@ const signup = dispatch => async ({ email, password }) => {
     navigate('mainFlow');
     showMessage({ message: 'Account Created!', type: 'success' });
   } catch (err) {
+    showMessage({ message: 'Unable to Create Account, Invalid Email or Password!', type: 'danger' });
     dispatch({ type: 'add_error', payload: 'Something went wrong' });
   }
 };

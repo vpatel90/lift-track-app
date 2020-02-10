@@ -40,7 +40,7 @@ HomeStack.navigationOptions = {
       }
     />
   ),
-  headerBackTitleStyle: { color: Colors.primary }
+  headerBackTitleStyle: globalStyles.colorPrimary
 };
 
 HomeStack.path = '';

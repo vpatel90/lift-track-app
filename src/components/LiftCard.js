@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { intersection } from 'lodash';
@@ -11,7 +11,7 @@ const LiftCard = ({ lift, selectedTags, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('NewLiftInstance', { lift_id: lift.id, lift_name: lift.name })}
-      style={styles.container}
+      style={styles.liftCard}
     >
       <Text style={styles.title}>{lift.name}</Text>
     </TouchableOpacity>
@@ -19,7 +19,7 @@ const LiftCard = ({ lift, selectedTags, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  liftCard: {
     margin: 10,
     borderColor: Colors.primary,
     borderWidth: 1,
