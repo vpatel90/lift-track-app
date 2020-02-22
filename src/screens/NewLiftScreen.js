@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, Switch, StyleSheet, Dimensions } from 'react-native';
 import { Button, Input, Text, Icon, Tooltip } from 'react-native-elements'
 import Colors from '../constants/Colors';
 import { Context as LiftContext } from '../context/LiftContext';
@@ -7,10 +7,13 @@ import Spacer from '../components/Spacer';
 import Tag from '../components/Tag';
 import { ScrollView } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';
+import { showMessage } from 'react-native-flash-message';
 
 const NewLiftScreen = () => {
   const { state, createLift } = useContext(LiftContext);
   const [name, setName] = useState('');
+  const [measurements, setMeasurements] = useState({ reps: true, weight: true, distance: false, time: false });
+  const [disableUnchecked, setDisableUnchecked] = useState(true);
   const [tagInput, setTagInput] = useState('');
   const [tagsToSave, setTagsToSave] = useState([])
   const [userTags, setUserTags] = useState([]);
@@ -27,6 +30,27 @@ const NewLiftScreen = () => {
 
   const removeTag = (selectedTag) => {
     setTagsToSave(tagsToSave.filter(listedTag => listedTag != selectedTag))
+  }
+
+  const addRemoveMeasurement = (measurement) => {
+    const val = measurements[measurement];
+    const newMeasurements = { ...measurements, [measurement]: !val };
+    const totalTrue = Object.values(newMeasurements).filter(i => i === true).length;
+    setMeasurements(newMeasurements);
+    setDisableUnchecked(totalTrue >= 2);
+  }
+
+  const validateForm = () => {
+    const errors = [];
+    if (!name.length) { errors.push('Name can\'t be blank') }
+    if (!Object.values(measurements).filter(i => i === true).length) { errors.push('Must select at least 1 measurement') }
+
+    if (errors.length) {
+      showMessage({ message: errors.join(' &\n'), type: 'danger' });
+    } else {
+      const formattedMeasurements = Object.keys(measurements).filter(m => measurements[m] === true);
+      createLift({ name, measurements: formattedMeasurements, tags: tagsToSave });
+    }
   }
 
   return (
@@ -51,7 +75,22 @@ const NewLiftScreen = () => {
             })
           }
         </View>
-        <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+        <Text style={{ fontSize: 16, marginBottom: 5, marginLeft: 10 }}>Please Select between 1 and 2 items to track</Text>
+        <View style={{flex: 1, flexDirection: "row", marginBottom: 20, marginLeft: 10}}>
+          <View style={{marginRight: 20, alignItems: "center"}}>
+            <Switch value={measurements.reps} disabled={!measurements.reps && disableUnchecked} onChange={() => addRemoveMeasurement('reps')}></Switch><Text>Reps</Text>
+          </View>
+          <View style={{marginRight: 20, alignItems: "center"}}>
+            <Switch value={measurements.weight} disabled={!measurements.weight && disableUnchecked} onChange={() => addRemoveMeasurement('weight')}></Switch><Text>Weight</Text>
+          </View>
+          <View style={{marginRight: 20, alignItems: "center"}}>
+            <Switch value={measurements.distance} disabled={!measurements.distance && disableUnchecked} onChange={() => addRemoveMeasurement('distance')}></Switch><Text>Distance</Text>
+          </View>
+          <View style={{marginRight: 20, alignItems: "center"}}>
+            <Switch value={measurements.time} disabled={!measurements.time && disableUnchecked} onChange={() => addRemoveMeasurement('time')}></Switch><Text>Time</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontSize: 20,marginRight: 5 }}>
             Tag your exercise!
           </Text>
@@ -104,7 +143,7 @@ const NewLiftScreen = () => {
       <Button
         buttonStyle={{ backgroundColor: Colors.primary, marginBottom: 10 }}
         title='Save'
-        onPress={() => createLift({ name, tags: tagsToSave })} />
+        onPress={() => validateForm()} />
     </View>
   );
 };
