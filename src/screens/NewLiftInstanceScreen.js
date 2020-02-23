@@ -5,19 +5,19 @@ import Colors from '../constants/Colors';
 import { Context as LiftInstanceContext } from '../context/LiftInstanceContext';
 import moment from 'moment';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import LiftInstanceItem from '../components/LiftInstanceItem';
 import globalStyles from '../styles/global';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
   const { state, createLiftInstance, destroyLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
   const [liftInstances, setLiftInstances] = useState([]);
-  const [reps, setReps] = useState('');
-  const [weight, setWeight] = useState('');
+  const [measurements, setMeasurements] = useState({ reps: '', weight: '', time: '00:00', distance: '' });
+
+  const inputRefs = { reps: React.createRef(), weight: React.createRef(), time: React.createRef(), distance: React.createRef() };
   const lift_id = navigation.getParam('lift_id');
   const lift_name = navigation.getParam('lift_name');
+  const lift_measurements = navigation.getParam('measurements');
   const date = moment().format('MMM D, YYYY');
-
-  const inputReps = React.createRef();
-  const inputWeight = React.createRef();
 
   useEffect(() => {
     getLiftInstances({ lift_id, lift_name });
@@ -27,60 +27,90 @@ const NewLiftInstanceScreen = ({ navigation }) => {
     setLiftInstances(state[lift_name]);
   }, [state[lift_name]]);
 
+  const inputChange = (key, value) => {
+    if (key === 'time') {
+      if (value.length < 5) value = value.padStart(5, '0');
+      const timeNums = value.replace(':', '').substr(value.length - 5);
+      value = [timeNums.slice(0,2), timeNums.slice(2,4)].join(':');
+    }
+    setMeasurements({ ...measurements, [key]: value });
+  };
+
   const submit = () => {
-    createLiftInstance({ lift_id, lift_name, date, reps, weight });
-    setReps('');
-    setWeight('');
-    inputReps.current.blur();
-    inputWeight.current.blur();
+    createLiftInstance({...measurements, lift_id, lift_name, date });
+    setMeasurements({ reps: '', weight: '', time: '00:00', distance: '' });
+    lift_measurements.forEach(m => inputRefs[m].current.blur());
   };
 
   const clone = (item) => {
-    createLiftInstance({ lift_id, lift_name, date, reps: item.reps, weight: item.weight });
+    createLiftInstance({
+      lift_id, lift_name, date,
+      reps: item.reps, weight: item.weight,
+      distance: item.distance, time: item.time
+    });
   }
 
   const destroy = (item) => {
     destroyLiftInstance({ lift_id, lift_name, date: item.date, lift_instance_id: item.id });
   }
 
+  const getLabel = (m) => {
+    switch (m) {
+      case 'reps':
+        return 'Reps';
+      case 'weight':
+        return 'Weight (lbs)';
+      case 'distance':
+        return 'Distance (Miles)';
+      case 'time':
+        return 'Time';
+      default:
+        return '';
+    }
+  }
+
+  const getPlaceholder = (m) => {
+    switch (m) {
+      case 'reps':
+        return '';
+      case 'weight':
+        return '';
+      case 'distance':
+        return '';
+      case 'time':
+        return '00:00';
+      default:
+        return '';
+    }
+  }
+
   return (
     <View style={globalStyles.container}>
       <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
-        <Input
-          ref={inputReps}
-          labelStyle={{ height: 20 }}
-          inputContainerStyle={{
-            borderBottomColor: Colors.primary,
-            height: 40
-          }}
-          containerStyle= {{
-            flex: 1
-          }}
-          keyboardType='numeric'
-          autoCapitalize='none'
-          autoCorrect={false}
-          label='Reps'
-          value={reps}
-          onChangeText={setReps}
-        />
-        <Input
-          ref={inputWeight}
-          labelStyle={{ height: 20 }}
-          inputContainerStyle={{
-            borderBottomColor: Colors.primary,
-            height: 40
-          }}
-          containerStyle= {{
-            flex: 1
-          }}
-          keyboardType='numeric'
-          autoCapitalize='none'
-          autoCorrect={false}
-          label='Weight'
-          value={weight}
-          onChangeText={setWeight}
-        />
+        {
+          lift_measurements.map((measurement, i) => {
+            return <Input
+              ref={inputRefs[measurement]}
+              key={measurement + i}
+              labelStyle={{ height: 20, fontSize: 12 }}
+              inputContainerStyle={{
+                borderBottomColor: Colors.primary,
+                height: 40
+              }}
+              containerStyle= {{
+                flex: 1
+              }}
+              keyboardType='numeric'
+              autoCapitalize='none'
+              autoCorrect={false}
+              label={getLabel(measurement)}
+              placeholder={getPlaceholder(measurement)}
+              value={measurements[measurement]}
+              onChangeText={(val) => inputChange(measurement, val)}
+            />
+          })
+        }
         <Button
           buttonStyle={{ backgroundColor: Colors.primary }}
           containerStyle= {{
@@ -112,9 +142,10 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                         titleStyle={globalStyles.colorPrimary}
                         buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
                         containerStyle={{
-                          height: 50,
+                          height: 40,
                           padding: 0,
                           marginLeft: -10,
+                          marginTop: 15,
                           width: 75
                         }}
                         title=''
@@ -129,29 +160,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                 swipeToOpenPercent={10}
                 renderItem={({item}) => {
                   return (
-                    <View style={styles.liftInstanceContainer}>
-                      <View style={{flex: 3, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                        <Text style={{fontSize: 18}}>
-                          {item.reps.toString().padStart(2, ' ')}
-                        </Text>
-                        <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type='ionicon'/>
-                        <Text style={{fontSize: 18, width: 90}}>
-                          {item.weight ? item.weight.toString().padStart(6, ' ') : ''.padStart(6, ' ')} {item.weight ? 'lbs' : ''}
-                        </Text>
-                      </View>
-                      <Button
-                        buttonStyle={{ backgroundColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
-                        containerStyle={{
-                          flex: 1,
-                          height: 50,
-                          padding: 0
-                        }}
-                        title=''
-                        icon={
-                          <Icon color='#fff' name={Platform.OS === 'ios' ? `ios-refresh` : 'md-refresh'} type='ionicon'/>
-                        }
-                        onPress={() => clone(item)} />
-                    </View>
+                    <LiftInstanceItem measurements={lift_measurements} item={item} callback={() => clone(item)}/>
                   );
                 }}
                 />
