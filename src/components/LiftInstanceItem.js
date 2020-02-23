@@ -7,10 +7,10 @@ import { formatTime } from '../helpers/timeHelper';
 const LiftInstanceItem = ({ measurements, item, callback }) => {
 
   const data = [];
-  if (measurements.indexOf('reps') > -1) data.push({ label: '', val: item.reps });
-  if (measurements.indexOf('weight') > -1) data.push({ label: 'lbs', val: item.weight });
-  if (measurements.indexOf('distance') > -1) data.push({ label: 'miles', val: item.distance });
-  if (measurements.indexOf('time') > -1) data.push({ label: 'mins', val: formatTime(item.time) });
+  if (measurements.includes('reps')) data.push({ label: '', val: item.reps });
+  if (measurements.includes('weight')) data.push({ label: 'lbs', val: item.weight });
+  if (measurements.includes('distance')) data.push({ label: 'miles', val: item.distance });
+  if (measurements.includes('time')) data.push({ label: 'mins', val: formatTime(item.time) });
 
   const dataContent = () => {
     if (data.length === 1 || data[1].toString().length === 0) {

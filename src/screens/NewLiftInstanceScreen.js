@@ -55,19 +55,11 @@ const NewLiftInstanceScreen = ({ navigation }) => {
     destroyLiftInstance({ lift_id, lift_name, date: item.date, lift_instance_id: item.id });
   }
 
-  const getLabel = (m) => {
-    switch (m) {
-      case 'reps':
-        return 'Reps';
-      case 'weight':
-        return 'Weight (lbs)';
-      case 'distance':
-        return 'Distance (Miles)';
-      case 'time':
-        return 'Time';
-      default:
-        return '';
-    }
+  const labels = {
+    reps: 'Reps',
+    weight: 'Weight (lbs)',
+    distance: 'Distance (Miles)',
+    time: 'Time'
   }
 
   return (
@@ -90,7 +82,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
               keyboardType='numeric'
               autoCapitalize='none'
               autoCorrect={false}
-              label={getLabel(measurement)}
+              label={labels[measurement]}
               value={measurements[measurement]}
               onChangeText={(val) => inputChange(measurement, val)}
             />
@@ -125,14 +117,8 @@ const NewLiftInstanceScreen = ({ navigation }) => {
                       <Button
                         type='outline'
                         titleStyle={globalStyles.colorPrimary}
-                        buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
-                        containerStyle={{
-                          height: 40,
-                          padding: 0,
-                          marginLeft: -10,
-                          marginTop: 15,
-                          width: 75
-                        }}
+                        buttonStyle={globalStyles.hiddenButtonStyle}
+                        containerStyle={{...globalStyles.hiddenButtonContainerStyle, marginTop: 15, height: 40}}
                         title=''
                         icon={
                           <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type='ionicon'/>

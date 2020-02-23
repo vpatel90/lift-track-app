@@ -98,7 +98,7 @@ export default function HomeScreen({ navigation }) {
           return (
             <TouchableHighlight
               style={{ borderBottomColor: Colors.secondaryLight, borderBottomWidth: 1 }}
-              onPress={() => navigation.navigate('NewLiftInstance', { lift_id: item.id, lift_name: item.name })}>
+              onPress={() => navigation.navigate('NewLiftInstance', { lift_id: item.id, lift_name: item.name, measurements: item.measurements })}>
               <View style={styles.liftContainer}>
                 <Text style={{ fontSize: 18, flex: 1 }}>
                   {item.name}
