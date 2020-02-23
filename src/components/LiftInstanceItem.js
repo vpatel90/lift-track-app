@@ -2,12 +2,10 @@ import React from 'react';
 import { Platform, View, StyleSheet } from 'react-native';
 import { ListItem, Text, Icon, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
+import { formatTime } from '../helpers/timeHelper';
 
 const LiftInstanceItem = ({ measurements, item, callback }) => {
 
-  const formatTime = (num) => {
-    return `${Math.floor(num/60).toString().padStart(2, '0')}:${(num%60).toString().padStart(2, '0')}`
-  }
   const data = [];
   if (measurements.indexOf('reps') > -1) data.push({ label: '', val: item.reps });
   if (measurements.indexOf('weight') > -1) data.push({ label: 'lbs', val: item.weight });

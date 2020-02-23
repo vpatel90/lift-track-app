@@ -7,6 +7,7 @@ import moment from 'moment';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import LiftInstanceItem from '../components/LiftInstanceItem';
 import globalStyles from '../styles/global';
+import { formatTime } from '../helpers/timeHelper';
 
 const NewLiftInstanceScreen = ({ navigation }) => {
   const { state, createLiftInstance, destroyLiftInstance, getLiftInstances } = useContext(LiftInstanceContext);
@@ -46,7 +47,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
     createLiftInstance({
       lift_id, lift_name, date,
       reps: item.reps, weight: item.weight,
-      distance: item.distance, time: item.time
+      distance: item.distance, time: formatTime(item.time)
     });
   }
 
