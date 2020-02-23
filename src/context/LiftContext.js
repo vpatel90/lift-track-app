@@ -61,9 +61,9 @@ const getLifts = dispatch => async () => {
   }
 };
 
-const createLift = dispatch => async ({ name, tags }) => {
+const createLift = dispatch => async ({ name, measurements, tags }) => {
   try {
-    const response = await trackerApi.post('/api/v1/lifts', { lift: { name }, tags: { tags: tags.join(',') }});
+    const response = await trackerApi.post('/api/v1/lifts', { lift: { name, measurements }, tags: { tags: tags.join(',') }});
     showMessage({ message: 'Exercise Created', type: 'success' });
     dispatch({ type: 'add_lift', payload: response.data });
     navigate('Home')

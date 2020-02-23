@@ -82,9 +82,9 @@ const getLiftInstances = dispatch => async ({ lift_id, lift_name }) => {
   }
 };
 
-const createLiftInstance = dispatch => async ({ lift_id, lift_name, date, reps, weight }) => {
+const createLiftInstance = dispatch => async ({ lift_id, lift_name, date, reps, weight, time, distance }) => {
   try {
-    const response = await trackerApi.post(`/api/v1/lifts/${lift_id}/lift_instances`, { lift_instance: { date, reps, weight }});
+    const response = await trackerApi.post(`/api/v1/lifts/${lift_id}/lift_instances`, { lift_instance: { date, reps, weight, time, distance }});
     showMessage({ message: 'Great Job!', backgroundColor: Colors.primary });
     dispatch({ type: 'add_lift_instance', payload: { lift_name, instance: response.data, date: response.data.date }});
   } catch (err) {

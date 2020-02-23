@@ -10,7 +10,7 @@ const LiftCard = ({ lift, selectedTags, navigation }) => {
   if (selectedTags.length && !show) { return <></>; }
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('NewLiftInstance', { lift_id: lift.id, lift_name: lift.name })}
+      onPress={() => navigation.navigate('NewLiftInstance', { lift_id: lift.id, lift_name: lift.name, measurements: lift.measurements })}
       style={styles.liftCard}
     >
       <Text style={styles.title}>{lift.name}</Text>
