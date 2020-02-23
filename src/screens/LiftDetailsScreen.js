@@ -31,7 +31,7 @@ const LiftDetailsScreen = ({ navigation }) => {
     const newMeasurements = { reps: false, weight: false, distance: false, time: false }
     lift.measurements.forEach(m => newMeasurements[m] = true)
     setMeasurements(newMeasurements);
-    lift.tags.forEach(t => addTag(t.name));
+    setTagsToSave(lift.tags.map(t => t.name));
     if (lift.measurements.length === 1) setDisableUnchecked(false);
   }, [])
 
