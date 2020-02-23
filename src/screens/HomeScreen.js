@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, ScrollView, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
 import Tag from '../components/Tag';
@@ -7,6 +7,7 @@ import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import globalStyles from '../styles/global';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import LiftCard from '../components/LiftCard';
 
 export default function HomeScreen({ navigation }) {
 
@@ -96,16 +97,7 @@ export default function HomeScreen({ navigation }) {
         data={lifts}
         renderItem={({ item }) => {
           return (
-            <TouchableHighlight
-              style={{ borderBottomColor: Colors.secondaryLight, borderBottomWidth: 1 }}
-              onPress={() => navigation.navigate('NewLiftInstance', { lift_id: item.id, lift_name: item.name, measurements: item.measurements })}>
-              <View style={styles.liftContainer}>
-                <Text style={{ fontSize: 18, flex: 1 }}>
-                  {item.name}
-                </Text>
-                <Icon color={Colors.secondaryLight} name='chevron-small-right' type='entypo' />
-              </View>
-            </TouchableHighlight>
+            <LiftCard lift={item} selectedTags={selectedTags} navigation={navigation} />
           )
         }}
         leftOpenValue={140}
@@ -168,13 +160,5 @@ const styles = StyleSheet.create({
   floatingButtonSecondary: {
     marginBottom: 10,
     borderColor: Colors.primary
-  },
-  liftContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    height: 70,
-    paddingHorizontal: 10
   }
 });
