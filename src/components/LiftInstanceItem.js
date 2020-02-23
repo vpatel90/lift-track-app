@@ -6,13 +6,13 @@ import Colors from '../constants/Colors';
 const LiftInstanceItem = ({ measurements, item, callback }) => {
 
   const formatTime = (num) => {
-    return `${Math.floor(num/60).toString().padStart(2, '0')}:${(num%60).toString().padEnd(2, '0')}`
+    return `${Math.floor(num/60).toString().padStart(2, '0')}:${(num%60).toString().padStart(2, '0')}`
   }
   const data = [];
   if (measurements.indexOf('reps') > -1) data.push({ label: '', val: item.reps });
   if (measurements.indexOf('weight') > -1) data.push({ label: 'lbs', val: item.weight });
-  if (measurements.indexOf('distance') > -1) data.push({ label: 'Miles', val: item.distance });
-  if (measurements.indexOf('time') > -1) data.push({ label: 'Mins', val: formatTime(item.time) });
+  if (measurements.indexOf('distance') > -1) data.push({ label: 'miles', val: item.distance });
+  if (measurements.indexOf('time') > -1) data.push({ label: 'mins', val: formatTime(item.time) });
 
   const dataContent = () => {
     if (data.length === 1 || data[1].toString().length === 0) {
