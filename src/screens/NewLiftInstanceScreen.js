@@ -154,14 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
     flexDirection: 'row'
-  },
-  liftInstanceContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: '#fff'
   }
 });
 
