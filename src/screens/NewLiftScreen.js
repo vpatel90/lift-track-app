@@ -9,8 +9,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';
 import { showMessage } from 'react-native-flash-message';
 
-const NewLiftScreen = () => {
-  const { state, createLift } = useContext(LiftContext);
+const NewLiftScreen = ({ navigation }) => {
+  const { state, createLift, updateLift } = useContext(LiftContext);
   const [name, setName] = useState('');
   const [measurements, setMeasurements] = useState({ reps: true, weight: true, distance: false, time: false });
   const [disableUnchecked, setDisableUnchecked] = useState(true);
@@ -18,9 +18,22 @@ const NewLiftScreen = () => {
   const [tagsToSave, setTagsToSave] = useState([])
   const [userTags, setUserTags] = useState([]);
 
+  const lift_id = navigation.getParam('lift_id');
+
   useEffect(() => {
     setUserTags(state.tags);
   }, [state.tags.length]);
+
+  useEffect(() => {
+    if (!lift_id) return;
+    const lift = state.lifts.find((l) => l.id === lift_id);
+    setName(lift.name);
+    const newMeasurements = { reps: false, weight: false, distance: false, time: false }
+    lift.measurements.forEach(m => newMeasurements[m] = true)
+    setMeasurements(newMeasurements);
+    lift.tags.forEach(t => addTag(t.name));
+    if (lift.measurements.length === 1) setDisableUnchecked(false);
+  }, [])
 
   const addTag = (tag) => {
     if (tagsToSave.includes(tag) || tag.trim() === '') return setTagInput('')
@@ -40,6 +53,15 @@ const NewLiftScreen = () => {
     setDisableUnchecked(totalTrue >= 2);
   }
 
+  const saveLift = () => {
+    const formattedMeasurements = Object.keys(measurements).filter(m => measurements[m] === true);
+    if (lift_id) {
+      updateLift({ name, measurements: formattedMeasurements, tags: tagsToSave, liftId: lift_id });
+    } else {
+      createLift({ name, measurements: formattedMeasurements, tags: tagsToSave });
+    }
+  }
+
   const validateForm = () => {
     const errors = [];
     if (!name.length) { errors.push('Name can\'t be blank') }
@@ -48,8 +70,7 @@ const NewLiftScreen = () => {
     if (errors.length) {
       showMessage({ message: errors.join(' &\n'), type: 'danger' });
     } else {
-      const formattedMeasurements = Object.keys(measurements).filter(m => measurements[m] === true);
-      createLift({ name, measurements: formattedMeasurements, tags: tagsToSave });
+      saveLift();
     }
   }
 
@@ -158,7 +179,7 @@ const toolTipText = () => {
 }
 
 NewLiftScreen.navigationOptions = {
-  title: 'Add New Exercise',
+  title: 'Details',
   headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
 }
