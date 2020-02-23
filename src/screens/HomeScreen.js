@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect }  from 'react';
-import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
-import { Text } from 'react-native-elements';
+import { StyleSheet, View, ScrollView, TouchableHighlight } from 'react-native';
+import { Text, Icon } from 'react-native-elements';
 import { Context as LiftContext } from '../context/LiftContext';
-import LiftCard from '../components/LiftCard';
 import Tag from '../components/Tag';
 import { Overlay, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import globalStyles from '../styles/global';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default function HomeScreen({ navigation }) {
 
@@ -91,17 +91,59 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
       {filtersOverlay()}
-      <FlatList
+      <SwipeListView
         keyExtractor={item => `lift-${item.id}`}
-        contentContainerStyle={{justifyContent: 'space-evenly'}}
         data={lifts}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return (
-            <LiftCard lift={item} selectedTags={selectedTags} navigation={navigation} />
-          );
+            <TouchableHighlight
+              style={{ borderBottomColor: Colors.secondaryLight, borderBottomWidth: 1 }}
+              onPress={() => navigation.navigate('NewLiftInstance', { lift_id: item.id, lift_name: item.name })}>
+              <View style={styles.liftContainer}>
+                <Text style={{ fontSize: 18 }}>
+                  {item.name}
+                </Text>
+              </View>
+            </TouchableHighlight>
+          )
         }}
+        leftOpenValue={140}
+        swipeToOpenPercent={10}
+        renderHiddenItem={({item}) => (
+          <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
+            <Button
+              type='outline'
+              titleStyle={globalStyles.colorPrimary}
+              buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
+              containerStyle={{
+                height: 50,
+                padding: 0,
+                marginLeft: -10,
+                width: 75
+              }}
+              title=''
+              icon={
+                <Icon color={Colors.primary} name={Platform.OS === 'ios' ? 'ios-create' : 'md-create' } type='ionicon' />
+              }
+              onPress={() => console.log('edit')} />
+            <Button
+              type='outline'
+              titleStyle={globalStyles.colorPrimary}
+              buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
+              containerStyle={{
+                height: 50,
+                padding: 0,
+                marginLeft: -10,
+                width: 75
+              }}
+              title=''
+              icon={
+                <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type='ionicon' />
+              }
+              onPress={() => console.log('delete')} />
+          </View>
+        )}
       />
-
       <Button
         buttonStyle={styles.floatingButton}
         title='Add New Exercise'
@@ -135,6 +177,13 @@ const styles = StyleSheet.create({
   floatingButtonSecondary: {
     marginBottom: 10,
     borderColor: Colors.primary
+  },
+  liftContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    height: 70,
+    paddingLeft: 20
   }
-
 });
