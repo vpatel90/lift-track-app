@@ -9,7 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';
 import { showMessage } from 'react-native-flash-message';
 
-const NewLiftScreen = ({ navigation }) => {
+const LiftDetailsScreen = ({ navigation }) => {
   const { state, createLift, updateLift } = useContext(LiftContext);
   const [name, setName] = useState('');
   const [measurements, setMeasurements] = useState({ reps: true, weight: true, distance: false, time: false });
@@ -178,7 +178,7 @@ const toolTipText = () => {
   );
 }
 
-NewLiftScreen.navigationOptions = {
+LiftDetailsScreen.navigationOptions = {
   title: 'Details',
   headerBackTitleStyle: globalStyles.colorPrimary,
   headerTintColor: Colors.primary
@@ -210,4 +210,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NewLiftScreen;
+export default LiftDetailsScreen;

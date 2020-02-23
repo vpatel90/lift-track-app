@@ -10,7 +10,7 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CounterScreen from '../screens/CounterScreen';
 import Colors from '../constants/Colors';
-import NewLiftScreen from '../screens/NewLiftScreen';
+import LiftDetailsScreen from '../screens/LiftDetailsScreen';
 import NewLiftInstanceScreen from '../screens/NewLiftInstanceScreen';
 
 const config = Platform.select({
@@ -22,7 +22,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Counter: CounterScreen,
-    NewLift: NewLiftScreen,
+    LiftDetails: LiftDetailsScreen,
     NewLiftInstance: NewLiftInstanceScreen
   },
   config
