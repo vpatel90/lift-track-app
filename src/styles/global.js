@@ -22,4 +22,15 @@ export default globalStyles = StyleSheet.create({
     fontSize: 18,
     color: '#fff'
   },
+  hiddenButtonStyle: {
+    borderColor: Colors.primary,
+    width: '80%',
+    alignSelf: 'flex-end'
+  },
+  hiddenButtonContainerStyle: {
+    height: 50,
+    padding: 0,
+    marginLeft: -10,
+    width: 75
+  }
 });

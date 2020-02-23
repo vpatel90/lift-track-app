@@ -100,9 +100,10 @@ export default function HomeScreen({ navigation }) {
               style={{ borderBottomColor: Colors.secondaryLight, borderBottomWidth: 1 }}
               onPress={() => navigation.navigate('NewLiftInstance', { lift_id: item.id, lift_name: item.name })}>
               <View style={styles.liftContainer}>
-                <Text style={{ fontSize: 18 }}>
+                <Text style={{ fontSize: 18, flex: 1 }}>
                   {item.name}
                 </Text>
+                <Icon color={Colors.secondaryLight} name='chevron-small-right' type='entypo' />
               </View>
             </TouchableHighlight>
           )
@@ -114,13 +115,8 @@ export default function HomeScreen({ navigation }) {
             <Button
               type='outline'
               titleStyle={globalStyles.colorPrimary}
-              buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
-              containerStyle={{
-                height: 50,
-                padding: 0,
-                marginLeft: -10,
-                width: 75
-              }}
+              buttonStyle={globalStyles.hiddenButtonStyle}
+              containerStyle={globalStyles.hiddenButtonContainerStyle}
               title=''
               icon={
                 <Icon color={Colors.primary} name={Platform.OS === 'ios' ? 'ios-create' : 'md-create' } type='ionicon' />
@@ -129,13 +125,8 @@ export default function HomeScreen({ navigation }) {
             <Button
               type='outline'
               titleStyle={globalStyles.colorPrimary}
-              buttonStyle={{ borderColor: Colors.primary, width: '80%', alignSelf: 'flex-end' }}
-              containerStyle={{
-                height: 50,
-                padding: 0,
-                marginLeft: -10,
-                width: 75
-              }}
+              buttonStyle={globalStyles.hiddenButtonStyle}
+              containerStyle={globalStyles.hiddenButtonContainerStyle}
               title=''
               icon={
                 <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-trash` : 'md-trash'} type='ionicon' />
@@ -184,6 +175,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     height: 70,
-    paddingLeft: 20
+    paddingHorizontal: 10
   }
 });
