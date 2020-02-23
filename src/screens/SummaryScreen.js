@@ -7,6 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import Colors from '../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';
+import LiftInstanceItem from '../components/LiftInstanceItem';
 
 const SummaryScreen = () => {
   const { state, getLiftDates, getDailySummary } = useContext(LiftContext);
@@ -107,25 +108,17 @@ const SummaryScreen = () => {
           keyExtractor={item => `dailySummary-${item.lift_name}`}
           data={dailySummary}
           renderItem={({item}) => {
+            const measurements = item.measurements;
             return (
-              <View style={{paddingBottom: 10, marginBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.secondaryLight }}>
+              <View style={{paddingBottom: 10, marginBottom: 10}}>
                 <Text style={{fontSize: 24, marginBottom: 12}}>{item.lift_name}</Text>
                 <FlatList
                   keyExtractor={item => `liftInstance-${item.id}`}
                   data={item.value}
                   renderItem={({item}) => {
+
                     return (
-                      <View style={styles.liftInstanceContainer}>
-                        <View style={{flex: 3, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                          <Text style={{fontSize: 18}}>
-                            {item.reps.toString().padStart(2, ' ')}
-                          </Text>
-                          <Icon color={Colors.secondary} name={Platform.OS === 'ios' ? `ios-close` : 'md-close'} type='ionicon'/>
-                          <Text style={{fontSize: 18, width: 90}}>
-                            {item.weight ? item.weight.toString().padStart(6, ' ') : ''.padStart(6, ' ')} {item.weight ? 'lbs' : ''}
-                          </Text>
-                        </View>
-                      </View>
+                      <LiftInstanceItem measurements={measurements} item={item}/>
                     );
                   }}
                 />
@@ -139,7 +132,7 @@ const SummaryScreen = () => {
   }
 
   return (
-    <View style={{...globalStyles.container, paddingBottom: 30}}>
+    <View style={{...globalStyles.container, paddingBottom: 50}}>
       {renderCalendar()}
       {renderSummary()}
     </View>
