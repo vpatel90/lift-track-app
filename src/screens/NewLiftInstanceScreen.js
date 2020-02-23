@@ -70,21 +70,6 @@ const NewLiftInstanceScreen = ({ navigation }) => {
     }
   }
 
-  const getPlaceholder = (m) => {
-    switch (m) {
-      case 'reps':
-        return '';
-      case 'weight':
-        return '';
-      case 'distance':
-        return '';
-      case 'time':
-        return '00:00';
-      default:
-        return '';
-    }
-  }
-
   return (
     <View style={globalStyles.container}>
       <Text h4>{lift_name}</Text>
@@ -106,7 +91,6 @@ const NewLiftInstanceScreen = ({ navigation }) => {
               autoCapitalize='none'
               autoCorrect={false}
               label={getLabel(measurement)}
-              placeholder={getPlaceholder(measurement)}
               value={measurements[measurement]}
               onChangeText={(val) => inputChange(measurement, val)}
             />
