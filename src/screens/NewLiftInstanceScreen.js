@@ -63,7 +63,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{...globalStyles.container, flex: 1}}>
       <Text h4>{lift_name}</Text>
       <View style={styles.formContainer}>
         {
@@ -101,7 +101,7 @@ const NewLiftInstanceScreen = ({ navigation }) => {
 
       <FlatList
         style={{marginTop: 80, marginBottom: 30}}
-        contentContainerStyle={{justifyContent: 'flex-start'}}
+        contentContainerStyle={{justifyContent: 'flex-start', flexGrow: 1}}
         keyExtractor={item => `liftInstance-${item.date}`}
         data={liftInstances}
         renderItem={({item}) => {
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     marginTop: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    flexGrow: 0
   }
 });
 

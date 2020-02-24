@@ -20,6 +20,16 @@ const liftReducer = (state, action) => {
         lifts: [...state.lifts, action.payload],
         tags: uniqBy([...state.tags, ...action.payload.tags], "name")
       }
+    case 'update_lift':
+      const updatedLifts = state.lifts.map((l) => {
+        if (l.id === action.payload.id) return action.payload;
+        return l;
+      })
+      return {
+        ...state,
+        lifts: updatedLifts,
+        tags: uniqBy([...state.tags, ...action.payload.tags], "name")
+      }
     default:
       return state;
   }
@@ -72,8 +82,21 @@ const createLift = dispatch => async ({ name, measurements, tags }) => {
   }
 }
 
+const updateLift = dispatch => async ({ liftId, name, measurements, tags }) => {
+  try {
+    const response = await trackerApi.put(`/api/v1/lifts/${liftId}`, { lift: { name, measurements }, tags: { tags: tags.join(',') }});
+    showMessage({ message: 'Exercise Updated', type: 'success' });
+    console.log(response.data);
+    dispatch({ type: 'update_lift', payload: response.data });
+    navigate('Home')
+  } catch (err) {
+    showMessage({ message: 'Exercise Failed to Update', type: 'danger' });
+    console.log(err);
+  }
+}
+
 export const { Provider, Context } = createDataContext(
   liftReducer,
-  { getLifts, getTags, getLiftDates, getDailySummary, createLift },
+  { getLifts, getTags, getLiftDates, getDailySummary, createLift, updateLift },
   { lifts: [], tags: [], liftDates: [], dailySummary: [] }
 );

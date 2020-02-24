@@ -25,11 +25,11 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     setLifts(state.lifts);
-  }, [state.lifts.length]);
+  }, [state.lifts]);
 
   useEffect(() => {
     setTags(state.tags);
-  }, [state.tags.length]);
+  }, [state.tags]);
 
   const updateSelectedTag = (pressedTag) => {
     const newTags = tags.map((tag) => {
@@ -113,7 +113,7 @@ export default function HomeScreen({ navigation }) {
               icon={
                 <Icon color={Colors.primary} name={Platform.OS === 'ios' ? 'ios-create' : 'md-create' } type='ionicon' />
               }
-              onPress={() => console.log('edit')} />
+              onPress={() => navigation.navigate('LiftDetails', { lift_id: item.id})} />
             <Button
               type='outline'
               titleStyle={globalStyles.colorPrimary}
@@ -130,7 +130,7 @@ export default function HomeScreen({ navigation }) {
       <Button
         buttonStyle={styles.floatingButton}
         title='Add New Exercise'
-        onPress={() => navigation.navigate('NewLift')}
+        onPress={() => navigation.navigate('LiftDetails')}
       />
     </View>
   );
