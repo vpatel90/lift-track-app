@@ -56,6 +56,7 @@ const SummaryScreen = () => {
   }
 
   const copyToClipboard = () => {
+    let str = '';
     const groupedTs = groupBy(textSummary, 'name');
     const uniqLifts = uniq(liftsDone);
  
@@ -65,7 +66,6 @@ const SummaryScreen = () => {
         str = str + `\n${itm.value}`;
       });
     })
-    console.log(str);
     Clipboard.setString(str)
   }
 
@@ -114,13 +114,16 @@ const SummaryScreen = () => {
     }
     return (
       <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+          <TouchableOpacity></TouchableOpacity>
         <TouchableOpacity onPress={() => setShowCalendar(!showCalendar)} style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10}}>
           <Text style={{fontSize: 20, marginRight: 10}}>{moment(selectedDate).format('MMM D, YYYY')}</Text>
           <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-calendar` : 'md-calendar'} type='ionicon'/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => copyToClipboard()}>
-          <Text>Copy to Clipboard</Text>
+        <TouchableOpacity onPress={() => copyToClipboard()} style={{ flexDirection: 'row', alignSelf: 'flex-end', marginBottom: 10}}>
+          <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-copy` : 'md-copy'} type='ionicon'/>
         </TouchableOpacity>
+        </View>
         {renderSummaryList()}
       </View>
     )
@@ -157,7 +160,7 @@ const SummaryScreen = () => {
   }
 
   return (
-    <View style={{...globalStyles.container, paddingBottom: 50}}>
+    <View style={{...globalStyles.container, paddingBottom: 100}}>
       {renderCalendar()}
       {renderSummary()}
     </View>
