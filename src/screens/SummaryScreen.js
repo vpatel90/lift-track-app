@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Clipboard } from 'react-native';
 import { Text, Icon } from 'react-native-elements'
 import { Context as LiftContext } from '../context/LiftContext';
 import moment from 'moment';
@@ -8,6 +8,7 @@ import Colors from '../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../styles/global';
 import LiftInstanceItem from '../components/LiftInstanceItem';
+import { groupBy, map, uniq } from 'lodash';
 
 const SummaryScreen = () => {
   const { state, getLiftDates, getDailySummary } = useContext(LiftContext);
@@ -16,6 +17,8 @@ const SummaryScreen = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [liftDates, setLiftDates] = useState({});
   const [dailySummary, setDailySummary] = useState([]);
+  const textSummary = [];
+  const liftsDone = [];
 
   useEffect(() => {
     getLiftDates();
@@ -45,6 +48,25 @@ const SummaryScreen = () => {
     return { ...liftDates,
       [selectedDate]: {...liftDates[selectedDate], selected: true, selectedColor: Colors.primary }
     }
+  }
+
+  const setDisplay = (exercise, val) => {
+    textSummary.push({ name: exercise, value: val });
+    liftsDone.push(exercise);
+  }
+
+  const copyToClipboard = () => {
+    const groupedTs = groupBy(textSummary, 'name');
+    const uniqLifts = uniq(liftsDone);
+ 
+    uniqLifts.forEach((ln) => {
+      str = str + `\n**${ln}**`;
+      groupedTs[ln].forEach((itm) => {
+        str = str + `\n${itm.value}`;
+      });
+    })
+    console.log(str);
+    Clipboard.setString(str)
   }
 
   const renderCalendar = () => {
@@ -96,6 +118,9 @@ const SummaryScreen = () => {
           <Text style={{fontSize: 20, marginRight: 10}}>{moment(selectedDate).format('MMM D, YYYY')}</Text>
           <Icon color={Colors.primary} name={Platform.OS === 'ios' ? `ios-calendar` : 'md-calendar'} type='ionicon'/>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => copyToClipboard()}>
+          <Text>Copy to Clipboard</Text>
+        </TouchableOpacity>
         {renderSummaryList()}
       </View>
     )
@@ -115,10 +140,10 @@ const SummaryScreen = () => {
                 <FlatList
                   keyExtractor={item => `liftInstance-${item.id}`}
                   data={item.value}
-                  renderItem={({item}) => {
+                  renderItem={(obj) => {
 
                     return (
-                      <LiftInstanceItem measurements={measurements} item={item}/>
+                      <LiftInstanceItem measurements={measurements} item={obj.item} setDisplay={(val) => setDisplay(item.lift_name, val)}/>
                     );
                   }}
                 />

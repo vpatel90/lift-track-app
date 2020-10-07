@@ -4,7 +4,7 @@ import { ListItem, Text, Icon, Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { formatTime } from '../helpers/timeHelper';
 
-const LiftInstanceItem = ({ measurements, item, callback }) => {
+const LiftInstanceItem = ({ measurements, item, callback, setDisplay }) => {
 
   const data = [];
   if (measurements.includes('reps')) data.push({ label: '', val: item.reps });
@@ -14,14 +14,18 @@ const LiftInstanceItem = ({ measurements, item, callback }) => {
 
   const dataContent = () => {
     if (data.length === 1 || data[1].toString().length === 0) {
+      const displayVal = `${data[0].val.toString().padStart(6, ' ')} ${data[0].label}`;
+      if (setDisplay) { setDisplay(displayVal) }
       return (
         <View style={{flex: 3, flexDirection: 'row', justifyContent: 'space-evenly'}}>
           <Text style={{fontSize: 18}}>
-            {data[0].val.toString().padStart(6, ' ')} {data[0].label}
+            {displayVal}
           </Text>
         </View>
       )
     }
+    const displayVal = `${data[0].val.toString().padStart(2, ' ')} ${data[0].label} x ${data[1].val.toString().padStart(6, ' ')} ${data[1].label}`;
+    if (setDisplay) { setDisplay(displayVal) }
     return(
       <View style={{flex: 3, flexDirection: 'row', justifyContent: 'space-evenly'}}>
         <Text style={{fontSize: 18}}>
